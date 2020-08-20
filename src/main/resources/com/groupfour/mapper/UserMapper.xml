@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.groupfour.dao.UserDao">
+	<resultMap type="users" id="usersMap">
+		<result column="user_id" property="userId" />
+		<result column="user_name" property="userName" />
+		<result column="role_id" property="role.roleId" />
+		<result column="role_name" property="role.roleName" />
+	</resultMap>
+	<select id="getAllUserList" resultMap="usersMap">
+		select * from sys_user u,sys_role r,sys_user_role ur
+		where r.role_id=ur.role_id and ur.user_id=u.user_id
+	</select>
+	<select id="searchUserList" resultMap="usersMap">
+		select * from sys_user u,sys_role r,sys_user_role ur
+		where r.role_id=ur.role_id and ur.user_id=u.user_id
+		<if test="roleId != null">
+			and r.role_id= #{roleId}
+		</if>
+		<if test="userName != null">
+			and u.user_name like concat('%',#{userName},'%')
+		</if>
+	</select>
+	<insert id="inserUser" parameterType="users">
+		insert into sys_user
+		values (#{users.userId}, #{users.userName}, #{users.password}, #{user.phone})
+	</insert>
+</mapper>

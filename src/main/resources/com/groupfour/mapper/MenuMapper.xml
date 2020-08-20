@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.groupfour.dao.MenuDao">
+	<resultMap type="menu" id="menuMap">
+		<id column="menu_id" property="menuId" />
+		<result column="menu_name" property="menuName" />
+		<collection property="childrenMenuList" column="menu_id"
+			ofType="menu" select="getChildMenuListByParentId"></collection>
+	</resultMap>
+	<resultMap type="menu" id="childMap">
+		<id column="menu_id" property="menuId" />
+		<result column="menu_name" property="menuName" />
+	</resultMap>
+
+	<!-- <select id="getAllMenuList" resultMap="menuMap">
+		select *
+		from sys_menu
+		where parent_id = 0
+	</select> -->
+
+	<select id="getParentMenuList" resultType="menu">
+		select *
+		from sys_menu
+		where parent_id = 0
+	</select>
+
+	<select id="getChildMenuListByParentId" resultMap="childMap">
+		select *
+		from sys_menu
+		where parent_id = #{parentId}
+	</select>
+
+	<insert id="insertMenu" useGeneratedKeys="true"
+		keyProperty="menuId">
+		insert into sys_menu(menu_name, menu_url, parent_id)
+		values
+		(#{menuName}, #{menuUrl}, #{parentId})
+	</insert>
+
+	<select id="getMenuById" parameterType="Integer" resultType="menu">
+		select *
+		from sys_menu
+		where menu_id = #{menuId}
+	</select>
+
+	<update id="updateMenu">
+		update sys_menu
+		set menu_name = #{menuName}, menu_url
+		= #{menuUrl}, parent_id = #{parentId}
+		where menu_id = #{menuId}
+	</update>
+
+	<delete id="deleteMenu" parameterType="Integer">
+		delete from sys_menu
+		where
+		menu_id = #{menuId}
+	</delete>
+</mapper>
