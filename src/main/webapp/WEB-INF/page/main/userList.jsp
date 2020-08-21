@@ -38,7 +38,7 @@
 	}
 	function formatterBtn(value,row,index){
 		var str = '<a href="#" name="editbtn" class="easyui-linkbutton" title="修改用户信息" onclick="editUser(&quot;'+row.userId+'&quot;,'+index+');">修改</a> &nbsp;&nbsp;'
-		  +'<a href="#" name="removebtn" class="easyui-linkbutton" title="删除用户信息" onclick="deleteUser(&quot;'+row.userId+'&quot;);" >删除</a>';
+		  +'<a href="#" name="removebtn" class="easyui-linkbutton" title="删除用户信息" onclick="deleteUser(&quot;'+row.userId+'&quot;,&quot;'+row.userName+'&quot;);" >删除</a>';
 		return str;
 			
 	}
@@ -71,38 +71,19 @@
 			})
 			
 		}
-		<%-- function deleteUser(username,index) {
-			$.ajax({
-				url:"<%=path %>/users/deleteUser",
-				data:{username:username},
-				success:function(data,textStatus){
-					if(textStatus=="success") {
-						if(data==true) {
-							alert("删除成功");
-							$('#dg').datagrid('deleteRow',index);
-							var rows = $("#dg").datagrid("getRows");
-							 $("#dg").datagrid("loadData",rows);
-						}
-					}
-				},
-				error:function(data,textStatus) {
-					alert("error: "+textStatus)
-				}
-			})
-		} --%>
-		function deleteUser(id){
-			   var args={deleteId:id};
-			   if(confirm("请确定是否删除此用户？")){
-			           $.ajax({
-			               url:'<%=path%>/users/deleteUser',
-			               data: args,
-			               success:function(data){
-			                   alert("刪除成功");
-			                   window.location.href = "<%=path%>/users/userList";
-			               }
-			           });
+		function deleteUser(id, userName){
+			var args={deleteId:id};
+			   if(confirm("确定删除用户”" + id + "--" + userName + "“吗？")){
+				   $.ajax({
+		               url:'<%=path%>/users/deleteUser',
+		               data: args,
+		               success:function(data){
+		                   alert("刪除成功");
+		                   window.location.href = "<%=path%>/users/userList";
+		               }
+		           });
 			   }
-			}
+		}
 
 		
 		function editUser(userId,index) {

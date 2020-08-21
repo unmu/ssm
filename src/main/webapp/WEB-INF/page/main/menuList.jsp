@@ -46,7 +46,7 @@
 	}
 	function formatterBtn(value,row,index){
 		var str = '<a href="#" name="editbtn" class="easyui-linkbutton" title="修改菜单信息" onclick="editMenu(&quot;'+row.menuId+'&quot;,'+index+');">修改</a> &nbsp;&nbsp;'
-		  +'<a href="#" name="removebtn" class="easyui-linkbutton" title="删除菜单信息" onclick="deleteMenu(&quot;'+row.menuId+'&quot;,'+index+');" >删除</a>';
+		  +'<a href="#" name="removebtn" class="easyui-linkbutton" title="删除菜单信息" onclick="deleteMenu(&quot;'+row.menuId+'&quot;,&quot;'+row.menuName+'&quot;,'+index+');" >删除</a>';
 		return str;
 			
 	}
@@ -71,7 +71,7 @@
 						{field:'menuUrl',title:'URL路径',width:100},
 						{field:'action',formatter: function(value,row,index){
 							var str = '<a href="#" name="editbtn" class="easyui-linkbutton" title="修改菜单信息" onclick="editMenu(&quot;'+row.menuId+'&quot;,'+index+');">修改</a> &nbsp;&nbsp;'
-							  +'<a href="#" name="removebtn" class="easyui-linkbutton" title="删除菜单信息" onclick="deleteMenu(&quot;'+row.menuId+'&quot;,'+index+');" >删除</a>';
+							  +'<a href="#" name="removebtn" class="easyui-linkbutton" title="删除菜单信息" onclick="deleteMenu(&quot;'+row.menuId+'&quot;,&quot;'+row.menuName+'&quot;,'+index+');" >删除</a>';
 							return str;
 						},title:'操作',width:100}
 					]],
@@ -194,29 +194,31 @@
 		})
 	}
 	
-	function deleteMenu(menuId,index) {
-		$.ajax({
-			url:"<%=path%>/menu/deleteMenu",
-			data : {
-				menuId : menuId
-			},
-			success : function(data, textStatus) {
-				if (textStatus == "success") {
-					if (data == true) {
-						alert("删除成功");
-						$('#dg').datagrid('deleteRow', index);
-						var rows = $("#dg").datagrid("getRows");
-						$("#dg").datagrid("loadData", rows);
-					} else {
-						alert("该菜单正在被使用或其下有子菜单，无法删除");
+	function deleteMenu(menuId,menuName,index) {
+		if (confirm("确认删除菜单“"+ menuName + "”吗？")) {
+			$.ajax({
+				url:"<%=path%>/menu/deleteMenu",
+				data : {
+					menuId : menuId
+				},
+				success : function(data, textStatus) {
+					if (textStatus == "success") {
+						if (data == true) {
+							alert("删除成功");
+							$('#dg').datagrid('deleteRow', index);
+							var rows = $("#dg").datagrid("getRows");
+							$("#dg").datagrid("loadData", rows);
+						} else {
+							alert("该菜单正在被使用或其下有子菜单，无法删除");
+						}
+						window.location.href = "<%=path%>/menu/menuList";
 					}
-					window.location.href = "<%=path%>/menu/menuList";
+				},
+				error : function(data, textStatus) {
+					alert("error: " + textStatus)
 				}
-			},
-			error : function(data, textStatus) {
-				alert("error: " + textStatus)
-			}
-		})
+			})
+		}
 	}
 </script>
 </head>

@@ -38,7 +38,7 @@
 	function formatterBtn(value,row,index){
 		var str = '<a href="#" class="easyui-linkbutton" title="菜单权限信息增删改" onclick="showMenu(&quot;'+row.roleId+'&quot;,'+index+');">权限菜单</a> &nbsp;&nbsp;'
 		  +'<a href="#" name="editbtn" class="easyui-linkbutton" title="修改角色信息" onclick="editRole(&quot;'+row.roleId+'&quot;,&quot;'+row.roleName+'&quot;,'+index+');">修改</a> &nbsp;&nbsp;'
-		  +'<a href="#" name="removebtn" class="easyui-linkbutton" title="删除角色信息" onclick="deleteRole(&quot;'+row.roleId+'&quot;,'+index+');" >删除</a>';
+		  +'<a href="#" name="removebtn" class="easyui-linkbutton" title="删除角色信息" onclick="deleteRole(&quot;'+row.roleId+'&quot;,&quot;'+row.roleName+'&quot;,'+index+');" >删除</a>';
 		return str;
 			
 	}
@@ -67,28 +67,31 @@
 			})
 			
 		}
-		function deleteRole(roleId,index) {
-			$.ajax({
-				url:"<%=path%>/role/deleteRole",
-				data:{roleId:roleId},
-				success:function(data,textStatus){
-					if(textStatus=="success") {
-						if(data==1) {
-							alert("删除成功");
-							$('#dg').datagrid('deleteRow',index);
-							var rows = $("#dg").datagrid("getRows");
-							 $("#dg").datagrid("loadData",rows);
-						} else if (data == 2) {
-							alert("删除失败");
-						} else {
-							alert("该角色尚在使用中，不能删除");
+		function deleteRole(roleId,roleName,index) {
+			if (confirm("确认删除角色“"+ roleName + "”吗？")) {
+				$.ajax({
+					url:"<%=path%>/role/deleteRole",
+					data:{roleId:roleId},
+					success:function(data,textStatus){
+						if(textStatus=="success") {
+							if(data == 1) {
+								alert("删除成功");
+								$('#dg').datagrid('deleteRow',index);
+								var rows = $("#dg").datagrid("getRows");
+								 $("#dg").datagrid("loadData",rows);
+							} else if (data == 2) {
+								alert("删除失败");
+							} else {
+								alert("该角色尚在使用中，不能删除");
+							}
 						}
+					},
+					error:function(data,textStatus) {
+						alert("error: "+textStatus)
 					}
-				},
-				error:function(data,textStatus) {
-					alert("error: "+textStatus)
-				}
-			})
+				})
+			}
+			
 		}
 		function editRole(roleId,roleName,index) {
 			$("#edit").window("open");
