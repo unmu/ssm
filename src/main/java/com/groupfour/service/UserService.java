@@ -26,7 +26,7 @@ public interface UserService {
 	 * 其中password要求赋值“111111”
 	 * @param users
 	 */
-	public void inserUser(Users users);
+	public boolean insertUser(Users users);
 	
 	/**
 	 * 通过用户名删除该用户信息，sys_user
@@ -34,14 +34,14 @@ public interface UserService {
 	 * @param userName
 	 * @return
 	 */
-	public boolean deleteUser(String userName);
+	public boolean deleteUser(String deleteId);
 	
 	/**
 	 * 通过用户名取用户信息sys_user，sys_user_role（userId，user_name，roleId）
 	 * @param userName
 	 * @return
 	 */
-	public Users getUserByUserId(String userName);
+	public Users getUserByUserId(String userId);
 	
 	/**
 	 * 根据user修改sys_user，sys_user_role的信息

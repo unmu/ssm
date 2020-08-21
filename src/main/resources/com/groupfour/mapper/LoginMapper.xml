@@ -8,17 +8,37 @@
 		<result column="role_name" property="role.roleName" />
 	</resultMap>
 	<select id="getUsersByNameAndPwd" resultMap="usersMap">
-		select * 
-		from sys_user u, sys_role r, sys_user_role ur
-		where r.role_id = ur.role_id and ur.user_id = u.user_id 
-		and u.user_id=#{userName} and password=#{password}
+		select *
+		from
+		sys_user u, sys_role r, sys_user_role ur
+		where r.role_id = ur.role_id
+		and ur.user_id = u.user_id
+		and u.user_id=#{userName} and
+		password=#{password}
 	</select>
 	<select id="getMenuListByRoleIdAndParenMenu" resultType="menu">
-		select * 
-		from sys_menu m, sys_role r, sys_role_menu rm 
-		where m.menu_id = rm.menu_id and r.role_id = rm.role_id
-		and r.role_id = #{roleId} and m.parent_id = #{parentId}
+		select *
+		from sys_menu m, sys_role r, sys_role_menu rm
+		where m.menu_id =
+		rm.menu_id and r.role_id = rm.role_id
+		and r.role_id =
+		#{roleId} and
+		m.parent_id = #{parentId}
 	</select>
-
-
+	<select id="getChildrenMenuListByParentAndRole"
+		resultType="menu">
+		SELECT m.*
+		FROM (sys_role r LEFT JOIN sys_role_menu rm ON r.role_id = rm.role_id)
+		LEFT JOIN sys_menu m ON m.menu_id = rm.menu_id
+		WHERE r.role_id = #{roleId} AND parent_id = #{parentId};
+	</select>
+	<select id="getParentMenuList" resultType="menu">
+		select distinct
+		parent_id
+		from (sys_role r left join sys_role_menu rm on r.role_id =
+		rm.role_id)
+		left join sys_menu m on m.menu_id = rm.menu_id
+		WHERE
+		r.role_id = #{roleId};
+	</select>
 </mapper>

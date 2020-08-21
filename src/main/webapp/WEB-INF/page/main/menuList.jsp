@@ -125,10 +125,10 @@
 								menuName:data.menuName,
 								menuUrl:data.menuUrl
 								});
-							
 						}
 						onLoadSuccess();
 						$("#add").window("close");
+						window.location.href = "<%=path%>/menu/menuList";
 					}
 				}
 			},
@@ -141,14 +141,16 @@
 	function editMenu(menuId,index) {
 		$("#edit").window("open");
 		if(menuId!=""){
-			$.get("<%=path%>/menu/getMenuById",{menuId:menuId},function(data,textStatus){
+			$.get("<%=path%>/menu/getMenuById",
+					{menuId:menuId},
+					function(data,textStatus){
 				$("#editMenuName").textbox("setValue",data.menuName);
 				$("#editMenuUrl").textbox("setValue",data.menuUrl);
 				$("#editParentId").combobox("setValue",data.parentId);
 				$("#editIndex").val(index);
 				$("#editMenuId").val(menuId);
 				if (data.parentId == 0) {
-					$("editMenuUrl").textbox("disabled", true);
+					$("#editMenuUrl").textbox({disabled:true});
 				}
 			})
 		}
@@ -161,7 +163,9 @@
 		var parentName = $("#editParentId").find("option:selected").text();
 		var index = $("#editIndex").val();
 		var menuId = $("#editMenuId").val();
-		$.post("<%=path%>/menu/updateMenu",{menuId:menuId,menuName:menuName,menuUrl:menuUrl,parentId:parentId},function(data,textStatus){
+		$.post("<%=path%>/menu/updateMenu",
+				{menuId:menuId,menuName:menuName,menuUrl:menuUrl,parentId:parentId},
+				function(data,textStatus){
 				if(data==true) {
 					alert("修改成功");
 					if(data.parentId=="") {
@@ -173,7 +177,6 @@
 								menuUrl:data.menuUrl
 							}
 						});
-						
 					} else {
 						$('#dg'+data.parentId).datagrid('updateRow',{
 							index:index,
@@ -182,15 +185,13 @@
 								menuName:data.menuName,
 								menuUrl:data.menuUrl
 							}
-							
 						});
-						
 					}
 					onLoadSuccess();
 					$("#edit").window("close");
+					window.location.href = "<%=path%>/menu/menuList";
 				}
 		})
-		
 	}
 	
 	function deleteMenu(menuId,index) {
@@ -206,7 +207,10 @@
 						$('#dg').datagrid('deleteRow', index);
 						var rows = $("#dg").datagrid("getRows");
 						$("#dg").datagrid("loadData", rows);
+					} else {
+						alert("该菜单正在被使用或其下有子菜单，无法删除");
 					}
+					window.location.href = "<%=path%>/menu/menuList";
 				}
 			},
 			error : function(data, textStatus) {

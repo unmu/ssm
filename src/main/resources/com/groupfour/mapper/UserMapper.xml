@@ -1,20 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="com.groupfour.dao.UserDao">
+
 	<resultMap type="users" id="usersMap">
 		<result column="user_id" property="userId" />
 		<result column="user_name" property="userName" />
 		<result column="role_id" property="role.roleId" />
 		<result column="role_name" property="role.roleName" />
 	</resultMap>
+
 	<select id="getAllUserList" resultMap="usersMap">
-		select * from sys_user u,sys_role r,sys_user_role ur
-		where r.role_id=ur.role_id and ur.user_id=u.user_id
+		select * from sys_user
+		u,sys_role r,sys_user_role ur
+		where r.role_id=ur.role_id and
+		ur.user_id=u.user_id
 	</select>
+	
 	<select id="searchUserList" resultMap="usersMap">
 		select * from sys_user u,sys_role r,sys_user_role ur
-		where r.role_id=ur.role_id and ur.user_id=u.user_id
+		where
+		r.role_id=ur.role_id and ur.user_id=u.user_id
 		<if test="roleId != null">
 			and r.role_id= #{roleId}
 		</if>
@@ -22,8 +29,42 @@
 			and u.user_name like concat('%',#{userName},'%')
 		</if>
 	</select>
-	<insert id="inserUser" parameterType="users">
-		insert into sys_user
-		values (#{users.userId}, #{users.userName}, #{users.password}, #{user.phone})
+
+	<insert id="insertUser">
+		insert into sys_user(user_id,user_name,password)
+		values(#{userId},#{userName},#{password})
 	</insert>
+
+	<insert id="insertUserRole">
+		insert into sys_user_role(user_id,role_id)
+		values(#{userId},#{roleId})
+	</insert>
+
+	<select id="getUserByUserId" parameterType="String"
+		resultMap="usersMap">
+		select u.user_id,u.user_name,r.role_id,r.role_name
+		from
+		sys_user u,sys_role r,sys_user_role ur
+		where u.user_id=ur.user_id and
+		r.role_id=ur.role_id and u.user_id=#{userId}
+	</select>
+
+	<update id="updateUser">
+		update sys_user set user_name=#{userName} where
+		user_id=#{userId}
+	</update>
+	
+	<update id="updateUserRole">
+		update sys_user_role set role_id=#{roleId} where
+		user_id=#{userId}
+	</update>
+
+	<update id="deleteUser">
+		delete from sys_user where user_id = #{deleteId}
+	</update>
+	
+	<update id="deleteUserRole">
+		delete from sys_user_role where user_id = #{deleteId}
+	</update>
+
 </mapper>

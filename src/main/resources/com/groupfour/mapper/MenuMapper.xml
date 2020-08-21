@@ -4,6 +4,7 @@
 <mapper namespace="com.groupfour.dao.MenuDao">
 	<resultMap type="menu" id="menuMap">
 		<id column="menu_id" property="menuId" />
+		<id column="parent_id" property="parentId" />
 		<result column="menu_name" property="menuName" />
 		<collection property="childrenMenuList" column="menu_id"
 			ofType="menu" select="getChildMenuListByParentId"></collection>
@@ -13,12 +14,6 @@
 		<result column="menu_name" property="menuName" />
 	</resultMap>
 
-	<!-- <select id="getAllMenuList" resultMap="menuMap">
-		select *
-		from sys_menu
-		where parent_id = 0
-	</select> -->
-
 	<select id="getParentMenuList" resultType="menu">
 		select *
 		from sys_menu
@@ -27,7 +22,8 @@
 
 	<select id="getChildMenuListByParentId" resultMap="childMap">
 		select *
-		from sys_menu
+		from
+		sys_menu
 		where parent_id = #{parentId}
 	</select>
 
@@ -38,10 +34,38 @@
 		(#{menuName}, #{menuUrl}, #{parentId})
 	</insert>
 
-	<select id="getMenuById" parameterType="Integer" resultType="menu">
+	<select id="getMenuById" parameterType="Integer"
+		resultType="menu">
 		select *
 		from sys_menu
 		where menu_id = #{menuId}
+	</select>
+
+	<select id="getAllMenuList" resultType="menu">
+		select *
+		from sys_menu
+		where parent_id = 0
+	</select>
+
+	<select id="deleteMenuPermissed" resultMap="menuMap">
+		SELECT *
+		FROM sys_menu
+		m, sys_role_menu rm
+		WHERE m.menu_id = rm.menu_id AND m.menu_id =
+		#{menuId};
+	</select>
+
+	<select id="getParentIdByMenuId" 
+		resultType="Integer">
+		SELECT parent_id
+		FROM sys_menu
+		WHERE menu_id = #{menuId}
+	</select>
+
+	<select id="getMenuListByParentId" resultMap="menuMap">
+		SELECT *
+		FROM sys_menu
+		WHERE parent_id = #{menuId};
 	</select>
 
 	<update id="updateMenu">

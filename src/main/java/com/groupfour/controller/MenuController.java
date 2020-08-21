@@ -65,7 +65,11 @@ public class MenuController {
 		Menu menu = new Menu();
 		menu.setMenuId(menuId);
 		menu.setMenuName(menuName);
-		menu.setMenuUri(menuUrl);
+		if (parentId == 0) {
+			menu.setMenuUri("#");
+		} else {
+			menu.setMenuUri(menuUrl);
+		}
 		menu.setParentId(parentId);
 		return service.updateMenu(menu);
 	}
@@ -74,7 +78,11 @@ public class MenuController {
 	@ResponseBody
 	public boolean deleteMenu(Integer menuId) {
 		System.out.println("do deleteMenu");
-		return service.deleteMenu(menuId);
+		System.out.println(service.deleteMenuPermissed(menuId));
+		if (service.deleteMenuPermissed(menuId) == true) {
+			return service.deleteMenu(menuId);
+		}
+		return false;
 	}
 	
 }

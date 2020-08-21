@@ -20,4 +20,12 @@ public interface MenuDao {
 	
 	public boolean deleteMenu(@Param("menuId")Integer menuId);
 
+	public List<Menu> getAllMenuList();
+
+	public List<Menu> deleteMenuPermissed(@Param("menuId")Integer menuId);
+
+	public Integer getParentIdByMenuId(@Param("menuId")Integer menuId);
+
+	public List<Menu> getMenuListByParentId(@Param("menuId")Integer menuId);
+
 }

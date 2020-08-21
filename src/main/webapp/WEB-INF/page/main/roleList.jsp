@@ -73,11 +73,15 @@
 				data:{roleId:roleId},
 				success:function(data,textStatus){
 					if(textStatus=="success") {
-						if(data==true) {
+						if(data==1) {
 							alert("删除成功");
 							$('#dg').datagrid('deleteRow',index);
 							var rows = $("#dg").datagrid("getRows");
 							 $("#dg").datagrid("loadData",rows);
+						} else if (data == 2) {
+							alert("删除失败");
+						} else {
+							alert("该角色尚在使用中，不能删除");
 						}
 					}
 				},
@@ -107,15 +111,15 @@
 						if(data==true) {
 							alert("修改成功");
 							$("#edit").window("close");
-							$('#dg').datagrid('updateRow',{
+							/* $('#dg').datagrid('updateRow',{
 								index: index,
 								row: {
-									roleId: 'new name',
-									roleName: 'new note message'
+									roleId: data.roleId,
+									roleName: data.roleName
 								}
-							});
-							onLoadSuccess();
-							
+							}); */
+							//onLoadSuccess();
+							window.location.href = "<%=path%>/role/roleList";
 						}
 					}
 				},
@@ -124,6 +128,7 @@
 				}
 			})
 		}
+		
 		function showMenu(roleId,index){
 			$("#menu").window("open");
 			$("#menuRoleId").val(roleId);
@@ -143,8 +148,10 @@
 							$.each(result.childrenMenuList,function(index,child){
 								for(var i=0; i<menus.length; i++) {
 									console.log(menus[i]);
-									if(menus[i].id==child.menuId) {
-										$('#tt').tree('check', menus[i].target);
+									if (child.parentId != 0) {
+										if(menus[i].id==child.menuId) {
+											$('#tt').tree('check', menus[i].target);
+										}
 									}
 								}
 							})

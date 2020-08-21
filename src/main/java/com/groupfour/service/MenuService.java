@@ -49,5 +49,7 @@ public interface MenuService {
 	 * @return
 	 */
 	public boolean deleteMenu(Integer menuId);
+
+	public boolean deleteMenuPermissed(Integer menuId);
 	
 }

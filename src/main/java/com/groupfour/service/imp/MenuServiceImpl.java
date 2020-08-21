@@ -52,4 +52,20 @@ public class MenuServiceImpl implements MenuService {
 		return dao.deleteMenu(menuId);
 	}
 
+	@Override
+	public boolean deleteMenuPermissed(Integer menuId) {
+		System.out.println(dao.deleteMenuPermissed(menuId));
+		if (dao.deleteMenuPermissed(menuId).size() == 0) {//未被使用
+			System.out.println(dao.getParentIdByMenuId(menuId));
+			if (dao.getParentIdByMenuId(menuId) == 0) {//是父类菜单
+				if (dao.getMenuListByParentId(menuId).size() == 0) {//其菜单下无子菜单
+					return true;
+				}
+				return false;
+			}
+			return true;// 可删
+		}
+		return false;// 不可删
+	}
+
 }

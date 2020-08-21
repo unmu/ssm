@@ -1,19 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
-    pageEncoding="utf-8"%>
-<%
-    String path = request.getContextPath(); 
-%>
+    pageEncoding="UTF-8"%>
+<% String path = pageContext.getServletContext().getContextPath();%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core"  prefix="c"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
-<!DOCTYPE html>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta charset="utf-8">
-<title>用戶信息</title>
-    <link rel="stylesheet" type="text/css" href="<%=path %>/css/main.css" />
-	<link rel="stylesheet" type="text/css" href="<%=path %>/jquery-easyui-1.8.6/themes/default/easyui.css" />
-	<link rel="stylesheet" type="text/css" href="<%=path %>/jquery-easyui-1.8.6/themes/icon.css" />
-	<link rel="stylesheet" type="text/css" href="<%=path %>/jquery-easyui-1.8.6/demo/demo.css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>用户管理</title>
+	<link rel="stylesheet" type="text/css" href="<%=path %>/jquery-easyui-1.8.6/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="<%=path %>/jquery-easyui-1.8.6/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="<%=path %>/jquery-easyui-1.8.6/demo/demo.css">
 	<script type="text/javascript" src="<%=path %>/jquery-easyui-1.8.6/jquery.min.js"></script>
 	<script type="text/javascript" src="<%=path %>/jquery-easyui-1.8.6/jquery.easyui.min.js"></script>
 	<style type="text/css">
@@ -27,6 +25,165 @@
 		margin:0 auto;
 	}
 	</style>
+	<script type="text/javascript">
+	function onLoadSuccess(){
+		$("a[name='editbtn']").linkbutton({
+			plain:true,
+		    iconCls: 'icon-edit'
+		});
+		$("a[name='removebtn']").linkbutton({
+			plain:true,
+		    iconCls: 'icon-remove'
+		});
+	}
+	function formatterBtn(value,row,index){
+		var str = '<a href="#" name="editbtn" class="easyui-linkbutton" title="修改用户信息" onclick="editUser(&quot;'+row.userId+'&quot;,'+index+');">修改</a> &nbsp;&nbsp;'
+		  +'<a href="#" name="removebtn" class="easyui-linkbutton" title="删除用户信息" onclick="deleteUser(&quot;'+row.userId+'&quot;);" >删除</a>';
+		return str;
+			
+	}
+		function addUser(){
+			var userId = $("#userId").val();
+			var userName = $("#userName").val();
+			var roleId = $("#roleId").val();
+			var roleName = $("#roleId").find("option:selected").text();
+			$.ajax({
+				url:"<%=path %>/users/insertUser",
+				data:$("#addForm").serialize(),
+				success:function(data,textStatus){
+					if(textStatus=="success") {
+						if(data==true ||data==null) {
+							alert("添加成功");
+							$('#dg').datagrid('appendRow',{
+								userId: userId,
+								userName: userName,
+								roleName:roleName
+								});
+							onLoadSuccess();
+							$("#add").window("close");
+						}
+					}
+				},
+				error:function(data,textStatus) {
+					//alert("error: "+textStatus)
+					alert("该用户名已被使用，请更换用户名")
+				}
+			})
+			
+		}
+		<%-- function deleteUser(username,index) {
+			$.ajax({
+				url:"<%=path %>/users/deleteUser",
+				data:{username:username},
+				success:function(data,textStatus){
+					if(textStatus=="success") {
+						if(data==true) {
+							alert("删除成功");
+							$('#dg').datagrid('deleteRow',index);
+							var rows = $("#dg").datagrid("getRows");
+							 $("#dg").datagrid("loadData",rows);
+						}
+					}
+				},
+				error:function(data,textStatus) {
+					alert("error: "+textStatus)
+				}
+			})
+		} --%>
+		function deleteUser(id){
+			   var args={deleteId:id};
+			   if(confirm("请确定是否删除此用户？")){
+			           $.ajax({
+			               url:'<%=path%>/users/deleteUser',
+			               data: args,
+			               success:function(data){
+			                   alert("刪除成功");
+			                   window.location.href = "<%=path%>/users/userList";
+			               }
+			           });
+			   }
+			}
+
+		
+		function editUser(userId,index) {
+			$("#edit").window("open");
+			if(userId!=""){
+				$.get("<%=path %>/users/getUserByUserId",{userId:userId},function(data,textStatus){
+					$("#editUserId").textbox("setValue",data.userId);
+					$("#editUserName").textbox("setValue",data.userName);
+					$("#editRoleId").combobox("setValue",data.role.roleId);
+					$("#editIndex").val(index);
+				})
+			}
+		}
+		
+		function saveUser(){
+			var userId = $("#editUserId").textbox("getValue");
+			var userName = $("#editUserName").textbox("getValue");
+			var roleId = $("#editRoleId").combobox("getValue");
+			var roleName = $("#editRoleId").find("option:selected").text();
+			var index = $("#editIndex").val();
+			$.post("<%=path %>/users/updateUser",{userId:userId,userName:userName,roleId:roleId},function(data,textStatus){
+					if(data==true) {
+						alert("修改成功");
+						/* $('#dg').datagrid('updateRow',{
+							index:index,
+							row: {
+								userId: userId,
+								userName: userName,
+								roleName:roleName
+							}
+							
+						}); */
+						onLoadSuccess();
+						$("#edit").window("close");
+						window.location.href = "<%=path%>/users/userList";
+					}
+			})
+			
+		}
+		
+		function searchUser(){
+			var realName = $("#searchRealName").textbox("getValue");
+			var roleId = $("#searchRoleId").textbox("getValue");
+			var pageSize = $('#pg').pagination('options').pageSize;
+			var pageNumber = $('#pg').pagination('options').pageNumber;
+			console.log(pageSize);
+			$.post("<%=path %>/users/searchUsers",{realName:realName,roleId:roleId,pageNumber:pageNumber,pageSize:pageSize},function(data,textStatus){
+					if(textStatus=="success") {
+						$.each(data.list,function(index,result){
+							result.roleName=result.role.roleName
+						})
+						$('#dg').datagrid('loadData',data.list);
+						$("#pg").pagination('refresh',{
+										total:data.total
+										});
+					}
+			})
+			
+		}
+/* 		$(function(){
+			$('#dg').datagrid('getPager').pagination({
+				onSelectPage:function(pageNumber, pageSize){
+					searchUser();
+				}
+			});
+		}) */
+		
+		function onSelectPage(pageNumber, pageSize){
+			var realName = $("#searchRealName").textbox("getValue");
+			var roleId = $("#searchRoleId").textbox("getValue");
+			$.post("<%=path %>/users/searchUsers",{realName:realName,roleId:roleId,pageNumber:pageNumber,pageSize:pageSize},function(data,textStatus){
+					if(textStatus=="success") {
+						$.each(data.list,function(index,result){
+							result.roleName=result.role.roleName
+						})
+						$('#dg').datagrid('loadData',{'total':data.total, rows:data.list });
+					}
+			})
+			
+		}
+	</script>
 </head>
 <body>
 	<div id="header">
@@ -85,12 +242,12 @@
 			<form id="addForm">
 				<div style="margin: 5px auto;">
 					<div>用户名:</div>
-					<input class="easyui-textbox" id="userName" name="username"
+					<input class="easyui-textbox" id="userId" name="userId"
 						style="width: 100%; height: 25px">
 				</div>
 				<div style="margin: 5px auto;">
 					<div>真实姓名:</div>
-					<input class="easyui-textbox" id="realName" name="realName"
+					<input class="easyui-textbox" id="userName" name="userName"
 						style="width: 100%; height: 25px">
 				</div>
 				<div style="margin: 5px auto;">
@@ -110,19 +267,20 @@
 			</form>
 		</div>
 	</div>
+
 	<div id="edit" class="easyui-window" title="修改用户信息"
 		data-options="modal:true,closed:true,iconCls:'icon-save'"
 		style="width: 500px; height: 300px; padding: 10px;">
 		<div style="margin: 0 auto; width: 60%;">
 			<div style="margin: 5px auto;">
 				<div>用户名:</div>
-				<input id="editIndex" type="hidden"> <input
-					class="easyui-textbox" id="editUserName" readonly="readonly"
+				<input id="editIndex" type="hidden"> 
+				<input class="easyui-textbox" id="editUserId" readonly="readonly"
 					style="width: 100%; height: 25px">
 			</div>
 			<div style="margin: 5px auto;">
 				<div>真实姓名:</div>
-				<input class="easyui-textbox" id="editRealName"
+				<input class="easyui-textbox" id="editUserName"
 					style="width: 100%; height: 25px">
 			</div>
 			<div style="margin: 5px auto;">
@@ -143,176 +301,4 @@
 		</div>
 	</div>
 </body>
-<script type="text/javascript">
-	$(function(){
-		findAll();
-		$("#closeUpdate").click(function(){ 
-			$("#update-wrapper").css("display","none");
-		});
-	});
-	function onLoadSuccess(){
-		$("a[name='editbtn']").linkbutton({
-			plain:true,
-		    iconCls: 'icon-edit'
-		});
-		$("a[name='removebtn']").linkbutton({
-			plain:true,
-		    iconCls: 'icon-remove'
-		});
-	}
-	function formatterBtn(value,row,index){
-		var str = '<a href="#" name="editbtn" class="easyui-linkbutton" title="修改用户信息" onclick="editUser(&quot;'+row.username+'&quot;,'+index+');">修改</a> &nbsp;&nbsp;'
-		  +'<a href="#" name="removebtn" class="easyui-linkbutton" title="删除用户信息" onclick="deleteUser(&quot;'+row.username+'&quot;,'+index+');" >删除</a>';
-		return str;
-			
-	}
-	var updateId;
-	function onSelectPage(pageNumber, pageSize){
-		var userId = $("#searchRealName").textbox("getValue");
-		var roleId = $("#searchRoleId").textbox("getValue");
-        var args = {userId:userId,roleId:roleId,pageNumber:pageNumber,pageSize:pageSize};
-		$.ajax({
-			url:'<%=path%>/users/searchUsers',
-			type : 'post',
-			data :args,
-			success:function(data,textStatus){
-				if(textStatus=="success") {
-					console.log(data.list);
-					$.each(data.list,function(index,result){
-						console.log(result);
-						result.roleName=result.role.roleName
-					})
-					$('#dg').datagrid('loadData',{'total':data.total, rows:data.list });
-				}
-			}
-		});
-		
-	}
-	function searchUser(){
-		var userName = $("#searchRealName").textbox("getValue");
-		var roleId = $("#searchRoleId").textbox("getValue");
-		var pageSize = $('#pg').pagination('options').pageSize;
-		var pageNumber = $('#pg').pagination('options').pageNumber;
-		console.log(pageSize);
-		$.post("<%=path %>/users/searchUsers",{userName:userName,roleId:roleId,pageNumber:pageNumber,pageSize:pageSize},function(data,textStatus){
-				if(textStatus=="success") {
-					$.each(data.list,function(index,result){
-						result.roleName=result.role.roleName
-					})
-					$('#dg').datagrid('loadData',data.list);
-					$("#pg").pagination('refresh',{
-						total:data.total
-					});
-				}
-		})
-		
-	}
-	function findAll(){
-		$.ajax({
-			url: '<%=path%>/getAll',
-			success:function(data){
-				$("#userBody").html("");
-				for(var i = 0;i<data.length;i++){
-					var tr = '<tr class="tableContent">'+
-					'<td>'+data[i].userId+'</td>'+
-					'<td>'+data[i].userName+'</td>'+
-					'<td>'+data[i].password+'</td>'+
-					'<td>'+data[i].phone+'</td>'+
-					'<td><button onclick="showUpdate(\''+data[i].userId+'\')">修改</button>|<button onclick="Delete(\''+data[i].userId+'\')">删除</button></td>'+
-					'</tr>';
-					$("#userBody").append(tr);
-				}
-			},
-			dataType:"json"
-		});
-	}
-	function Check(){
-		var searchInput = $("#searchInput").val();
-		var args={searchInput:searchInput};
-		$.ajax({
-			url:'<%=path%>/checkUser',
-			data: args,
-			success:function(data){
-				$("#userBody").html("");
-				for(var i = 0;i<data.length;i++){
-					var tr = '<tr class="tableContent">'+
-					'<td>'+data[i].userId+'</td>'+
-					'<td>'+data[i].userName+'</td>'+
-    				'<td>'+data[i].password+'</td>'+
-					'<td>'+data[i].phone+'</td>'+
-					'<td><button onclick="showUpdate(\''+data[i].userId+'\')">修改</button>|<button onclick="Delete(\''+data[i].userId+'\')">删除</button></td>'+
-					'</tr>';
-					$("#userBody").append(tr);
-				}
-			},
-			dataType:"json"
-		});
-	}
-	function add(){
-		var addId = $("#addId").val();
-		var addName = $("#addName").val();
-		var addPass = $("#addPass").val();
-		var addPhone = $("#addPhone").val();
-		var args = {addId:addId,addName:addName,addPass:addPass,addPhone:addPhone};
-		$.ajax({
-			url:'<%=path%>/users/addUser',
-			type : 'post',
-			data :args,
-			success:function(data){
-				findAll();
-				alert("添加成功");
-				console.log(data);
-			}
-		});
-	}
-	function Delete(id){
-		updateId = id;
-		var args={updateId:updateId};
-		$.ajax({
-			url:'<%=path%>/deleteUser',
-			data: args,
-			success:function(data){
-				findAll();	
-				alert("刪除成功");
-				console.log(data);
-			}
-		});
-	}
-	function showUpdate(id){
-		updateId = id;
-		var args={updateId:updateId};
-		$.ajax({
-			url:'<%=path%>/showUpdate',
-			data: args,
-			success:function(data){
-				// 吧数据显示在弹窗中
-				$("#updateId").val(data.userId);
-				$("#updateName").val(data.userName);
-				$("#updatePass").val(data.password);
-				$("#updatePhone").val(data.phone);
-			    $("#update-wrapper").css("display","inline");
-			    console.log(data);
-			}
-		});
-	}
-
-	function update(){
-		var updateId = $("#updateId").val();
-		var updateName = $("#updateName").val();
-		var updatePass = $("#updatePass").val();
-		var updatePhone = $("#updatePhone").val();
-		var args = {updateId:updateId,updateName:updateName,updatePass:updatePass,updatePhone:updatePhone};
-		$.ajax({
-			url:'<%=path%>/updateUser',
-			type : 'post',
-			data :args,
-			success:function(data){
-				$("#update-wrapper").css("display","none");
-				findAll();
-				alert("修改成功");
-				console.log(data);
-			}
-		});
-	}
-</script>
 </html>
