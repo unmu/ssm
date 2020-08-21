@@ -26,23 +26,27 @@
 	function loginCheck(){
 		var username = $("#username").val();
 		var password = $("#password").val();
-		var args = {username:username,password:password};
-		$.ajax({
-			async:false,
-			url:'<%=path%>/loginCheck',
-			type : 'post',
-			data :args,
-			success:function(data,textStatus){
-				if(textStatus=="success") {
-					console.log(data);
-					if(data == true){
-						window.location.href="main";
-					} else {
-						alert("用户名或密码错误！");
+		if (username.length == 0 || password.length == 0) {
+			alert("请输入用户名和密码");
+		} else {
+			var args = {username:username,password:password};
+			$.ajax({
+				async:false,
+				url:'<%=path%>/loginCheck',
+				type : 'post',
+				data :args,
+				success:function(data,textStatus){
+					if(textStatus=="success") {
+						console.log(data);
+						if(data == true){
+							window.location.href="main";
+						} else {
+							alert("用户名或密码错误！");
+						}
 					}
 				}
-			}
-		});
+			});
+		}
 	}
 </script>
 </head>
