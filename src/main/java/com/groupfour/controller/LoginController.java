@@ -1,5 +1,7 @@
 package com.groupfour.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,8 @@ import com.groupfour.service.LoginService;
 @Controller
 @SessionAttributes("users")
 public class LoginController {// 获取数据
+	
+	private String path = "/Hospital";//项目名（路径）
 
 	@Autowired
 	private LoginService service;
@@ -26,6 +30,10 @@ public class LoginController {// 获取数据
 //		view.setViewName("main");
 //		return view;
 //	}
+	@RequestMapping("login")
+    public String toLogin() {
+        return "login";
+    }
 	
 	@RequestMapping("main")
 	public String login() {
@@ -44,6 +52,13 @@ public class LoginController {// 获取数据
 			flag = true;
 		}
 		return flag;
+	}
+
+	@RequestMapping("logout")
+	public String logout(HttpSession session) {
+		System.out.println("logout");
+		session.invalidate();
+		return "redirect: " + path + "/login";
 	}
 
 }
