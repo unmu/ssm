@@ -130,7 +130,7 @@
 			var pageSize = $('#pg').pagination('options').pageSize;
 			var pageNumber = $('#pg').pagination('options').pageNumber;
 			console.log(pageSize);
-			$.post("<%=path %>/users/searchUsers",{realName:realName,roleId:roleId,pageNumber:pageNumber,pageSize:pageSize},function(data,textStatus){
+			$.post("<%=path %>/users/searchUsers",{userName:realName,roleId:roleId,pageNumber:pageNumber,pageSize:pageSize},function(data,textStatus){
 					if(textStatus=="success") {
 						$.each(data.list,function(index,result){
 							result.roleName=result.role.roleName
@@ -167,6 +167,7 @@
 	</script>
 </head>
 <body>
+	<div style="color:#0E2D5F; font-size: 16px">系统管理--用户管理</div>
 	<div id="header">
 		<div style="margin: 5px auto; float: left; width: 25%">
 			<div>真实姓名:</div>

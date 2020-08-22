@@ -18,6 +18,7 @@ public class MenuController {
 	@Autowired
 	private MenuService service;
 	
+	// 菜单列表
 	@RequestMapping("menuList")
 	public String menuList(ModelMap modelMap) {
 		System.out.println("to menu/menuList");
@@ -26,6 +27,7 @@ public class MenuController {
 		return "main/menuList";
 	}
 	
+	// 查看子菜单
 	@RequestMapping("getChildMenusByParentId")
 	@ResponseBody
 	public List<Menu> getChildMenuListByParentId(Integer parentId) {
@@ -54,14 +56,13 @@ public class MenuController {
 			menu.setMenuUri(menuUrl);
 		}
 		menu.setMenuName(menuName);
-		System.out.println(menuName);
 		return service.insertMenu(menu);
 	}
 	
 	@RequestMapping("updateMenu")
 	@ResponseBody
 	public boolean updateMenu(Integer menuId, String menuName, String menuUrl, Integer parentId) {
-		System.out.println("do updateMenu" + parentId);
+		System.out.println("do updateMenu");
 		Menu menu = new Menu();
 		menu.setMenuId(menuId);
 		menu.setMenuName(menuName);
@@ -78,7 +79,6 @@ public class MenuController {
 	@ResponseBody
 	public boolean deleteMenu(Integer menuId) {
 		System.out.println("do deleteMenu");
-		System.out.println(service.deleteMenuPermissed(menuId));
 		if (service.deleteMenuPermissed(menuId) == true) {
 			return service.deleteMenu(menuId);
 		}

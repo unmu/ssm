@@ -224,6 +224,7 @@
 </head>
 <body>
 	<div id="content">
+	<div style="color:#0E2D5F; font-size: 16px">系统管理--菜单管理</div>
 		<table id="dg" class="easyui-datagrid" style="width: 100%;"
 			singleSelect="true" fitColumns="true"
 			data-options="onLoadSuccess:onLoadSuccess">

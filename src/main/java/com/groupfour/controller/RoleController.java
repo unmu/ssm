@@ -73,13 +73,9 @@ public class RoleController {
 	public List<Menu> getMenuListByRoleId(Integer roleId) {
 		System.out.println("getMenuListByRoleId");
 		List<Menu> menuList = service.getMenusByRoleId(roleId);
-		for (Menu menu : menuList) {
-			System.out.println("menu----" + menu.getChildrenMenuList());
-			List<Menu> childMenu  = menu.getChildrenMenuList();
-			for (Menu child : childMenu) {
-				System.out.println("childMenu----" +child.getMenuId() + " " + child.getMenuName());
-			}
-		}
+//		for (Menu menu : menuList) {
+//			List<Menu> childMenu  = menu.getChildrenMenuList();
+//		}
 		return menuList;
 	}
 	

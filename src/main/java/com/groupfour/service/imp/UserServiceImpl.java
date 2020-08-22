@@ -37,11 +37,11 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public boolean updateUser(Users users) {
 		if(users!=null&&!"".equals(users.getUserId())){
-			System.out.println(users.getUserName());
+//			System.out.println(users.getUserName());
 			boolean flag=userDao.updateUser(users);
 			if (flag) {
 				if(users.getRole()!=null&&!"".equals(users.getRole().getRoleId())){
-					System.out.println(users.getRole().getRoleId());
+//					System.out.println(users.getRole().getRoleId());
 					boolean flag1=userDao.updateUserRole(users.getUserId(), users.getRole().getRoleId());
 					if (flag1) {
 						return true;

@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.groupfour.entity.Users;
@@ -30,6 +31,8 @@ public class LoginController {// 获取数据
 //		view.setViewName("main");
 //		return view;
 //	}
+	
+	// 打开login.jsp的入口
 	@RequestMapping("login")
     public String toLogin() {
         return "login";
@@ -40,6 +43,7 @@ public class LoginController {// 获取数据
 		return "main";
 	}
 	
+	// 登录-用户名密码正确验证
 	@RequestMapping("loginCheck")
 	@ResponseBody
 	public boolean loginCheck(Model model, String username, String password) {
@@ -54,10 +58,14 @@ public class LoginController {// 获取数据
 		return flag;
 	}
 
+	// 退出登录
 	@RequestMapping("logout")
-	public String logout(HttpSession session) {
+	public String logout(HttpSession session, SessionStatus sessionStatus) {
 		System.out.println("logout");
+		//销毁session
+		session.removeAttribute("users");
 		session.invalidate();
+		sessionStatus.setComplete();
 		return "redirect: " + path + "/login";
 	}
 

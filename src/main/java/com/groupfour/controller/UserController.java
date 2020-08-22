@@ -33,7 +33,6 @@ public class UserController {
 		List roleList = this.roleService.getAllRoleList();
 		PageInfo page = new PageInfo(userList);
 		model.addAttribute("page", page);
-		System.out.println(page);
 		model.addAttribute("roleList", roleList);
 		return "main/userList";
 	}
@@ -47,24 +46,13 @@ public class UserController {
 		PageHelper.startPage(pageNumber.intValue(), pageSize.intValue());
 		List<Users> users = this.service.searchUserList(userName, roleId);
 		PageInfo page = new PageInfo(users);
-		System.out.println(page);
 		return page;
 	}
-
-//	@RequestMapping("addUser")
-//	@ResponseBody
-//	public String addUser(String addId, String addName, String addPass, String addPhone) {
-//		System.out.println(addId);
-//		Users users = new Users();
-//		service.inserUser(users);
-//		return "main/userList";
-//	}
 
 	@RequestMapping("insertUser")
 	@ResponseBody
 	public boolean insertUser(Users users) {
 		System.out.println("insertUser");
-		System.out.println(users);
 		boolean flag = this.service.insertUser(users);
 		return flag;
 	}
@@ -96,7 +84,6 @@ public class UserController {
 	@ResponseBody
 	public String deleteUser(String deleteId) {
 		System.out.println("deleteUser");
-		System.out.println(deleteId);
 		service.deleteUser(deleteId);
 		return "main/userList";
 	}

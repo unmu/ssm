@@ -64,7 +64,6 @@ public class RoleServiceImpl implements RoleService{
 		for (Menu menu : menuList) {
 			List<Menu> childrenMenuList = new ArrayList<Menu>();
 			childrenMenuList = loginDao.getChildrenMenuListByParentAndRole(menu.getParentId(), roleId);
-			System.out.println(childrenMenuList);
 			menu.setChildrenMenuList(childrenMenuList);
 		}
 		return menuList;
@@ -83,7 +82,6 @@ public class RoleServiceImpl implements RoleService{
 			List<Menu> childrenMenuList = new ArrayList<Menu>();
 			Integer parentId = menu.getMenuId();
 			childrenMenuList = menuDao.getChildMenuListByParentId(parentId);
-			System.out.println("getAllMenuList" + childrenMenuList);
 			menu.setChildrenMenuList(childrenMenuList);
 		}
 		return menuList;
