@@ -376,6 +376,11 @@ function insertPatient() {
 	})
 	}
 }
+
+//取消 按钮
+function refreshPage() {
+	window.location.href = "<%=path%>/opreg/loadOptRegistPage";
+}
 </script>
 </head>
 <body>
@@ -644,20 +649,13 @@ function insertPatient() {
 	</div>
 	<form class="form-inline radius-box" style="border: none">
 		<div class="form-group">
-			<label for="exampleInputName2" class="label-std1">项目</label> <select
-				class="selectpicker">
-				<option>挂号</option>
-				<option>---</option>
-			</select>
-		</div>
-		<div class="form-group">
 			<label for="exampleInputEmail2" class="label-std1">金额</label> <input
 				type="number" class="form-control" id="money"
 				onkeyup="changeMoney()" placeholder="0.00">
 		</div>
 		<div class="bottom-button">
 			<button type="button" class="btn btn-success" onclick="saveInfo();">保存</button>
-			<button type="button" class="btn btn-warning">取消</button>
+			<button type="button" class="btn btn-warning" onclick="refreshPage();">取消</button>
 		</div>
 	</form>
 

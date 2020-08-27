@@ -30,7 +30,7 @@
 
 	<insert id="addRegisterInfo" parameterType="com.groupfour.entity.RegisterInfo">
 		insert into register_info(register_id,patient_card,dept_id,doctor_id,expenses_type,diagnosis_type,register_type,money,flag,register_time)
-		values(replace(uuid(),'-',''),#{patientInfo.patientCard},#{deptInfo.deptId},#{doctorInfo.doctorId},#{expensesType},#{diagnosisType},#{registerType},#{money},#{flag},now())
+		values(#{registerId},#{patientInfo.patientCard},#{deptInfo.deptId},#{doctorInfo.doctorId},#{expensesType},#{diagnosisType},#{registerType},#{money},#{flag},now())
 	</insert>
 
 

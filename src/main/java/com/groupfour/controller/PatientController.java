@@ -1,6 +1,9 @@
 package com.groupfour.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,9 +11,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.groupfour.entity.DiagnosisInfo;
 import com.groupfour.entity.MedicineInfo;
 import com.groupfour.entity.MedicinePerscription;
 import com.groupfour.entity.RegisterInfo;
+import com.groupfour.entity.Users;
 import com.groupfour.service.DiagnosisService;
 import com.groupfour.service.MedicineService;
 
@@ -24,7 +29,41 @@ public class PatientController {
 	@Autowired
 	private MedicineService medicineService;
 	
-	private String registerId="23a6cd4fe78211eabb22005056c00001";
+	@Autowired
+	private DiagnosisService diagnosisService;
+	
+	@RequestMapping("optPatient")
+	public String optPatientA(Model model,HttpSession session){
+		List<RegisterInfo> registerList = new ArrayList<RegisterInfo>();
+		Users users = (Users) session.getAttribute("users");
+		registerList = diagnosisService.getRegisterInfoByDoctorId(users.getUserId());
+		model.addAttribute("diagList", registerList);
+		return "dt/optPatient";
+	}
+	
+	@RequestMapping("dtInfoAdd")
+	public String dtInfoAdd(Model model, String registerId){
+		
+		RegisterInfo registerInfo = diagnosisService.getRegisterInfoByRegisterId(registerId);
+		model.addAttribute("registerInfo", registerInfo);
+		return "dt/diagnosisInfoAdd";
+	}
+	
+	@RequestMapping("saveDiagnosisInfo")
+	@ResponseBody
+	public boolean saveDiagnosisInfo(Model model, DiagnosisInfo diagnosisInfo){
+		boolean flag = diagnosisService.insertDiagnosisInfo(diagnosisInfo);
+		return flag;
+	}
+	
+	@RequestMapping("patientPerscription")
+	public String patientPerscription(Model model, String registerId){
+		RegisterInfo registerInfo = diagnosisService.getRegisterInfoByRegisterId(registerId);
+		model.addAttribute("registerInfo", registerInfo);
+		return "dt/patientPerscription";
+	}
+	
+	/*private String registerId="23a6cd4fe78211eabb22005056c00001";
 	
 	@RequestMapping("optPatient")
 	public String medicList(Model model) {
@@ -59,7 +98,7 @@ public class PatientController {
         return flag;
 	}
 	
-/*	@RequestMapping("addMedic")
+	@RequestMapping("addMedic")
 	@ResponseBody
 	public Integer addMedic(List<MedicinePerscription> mList){
 		boolean flag = service.saveMedicinePerscriptions(mList);
@@ -71,7 +110,7 @@ public class PatientController {
 		}
 		
 	}
-	*/
+	
 	
 	
 //	@RequestMapping("searchMedicineInfoList")
@@ -86,4 +125,5 @@ public class PatientController {
 //		service.saveMedicinePerscriptions(mpList);
 //		return service.getMpListByRegisterId(mpList.get(0).getRegisterId(), 0);
 //	}
+*/
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.groupfour.entity.CheckItem;
 import com.groupfour.entity.MedicinePerscription;
 import com.groupfour.entity.RegisterInfo;
 
@@ -17,4 +18,6 @@ public interface DiagnosisDao {
 
 	public boolean addMedicinePerscription(@Param("registerId")String registerId, @Param("medicineId")String medicineId,@Param("num")int num);
 	
+	public List<CheckItem> getCheckItemListByRegisterId(@Param("registerId")String registerId,@Param("flag")Integer flag);
+
 }

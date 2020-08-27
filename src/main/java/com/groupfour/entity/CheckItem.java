@@ -2,15 +2,16 @@ package com.groupfour.entity;
 
 public class CheckItem {
 	
-	String checkID;
+	String checkID;  //开具检查项目id
 	String registerID;
-	String itemID; 
-	int amount; 
-	float money;
-	int returnAmount;
-	float returnMoney; 
-	int flag; 
+	String itemID;  //检查项目id
+	int amount;    //检查次数
+	float money;  //金额
+	int returnAmount; //退还次数
+	float returnMoney; //退还金额
+	int flag;   //0-未缴费  1-已缴费  2-已退费
 	String remark;
+	InspectionItem inspectionItem;
 	
 	
 	public String getCheckID() {
@@ -67,5 +68,13 @@ public class CheckItem {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
+	public InspectionItem getInspectionItem() {
+		return inspectionItem;
+	}
+	public void setInspectionItem(InspectionItem inspectionItem) {
+		this.inspectionItem = inspectionItem;
+	}
+	
+	
 	
 }

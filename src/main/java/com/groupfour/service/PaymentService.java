@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.groupfour.entity.CheckItem;
 import com.groupfour.entity.MedicinePerscription;
+import com.groupfour.entity.RegisterInfo;
 
 /**
  * 费用模块流程：
@@ -57,5 +58,35 @@ public interface PaymentService {
 	 * @param registerId 挂号id
 	 */
 	public void returnPayment(Integer returnAmount,Double returnMoeny,MedicinePerscription mp,CheckItem checkItem,String registerId);
-		 
+	
+	public List<RegisterInfo> searchRegisterUnpaidListByIDName(String userID, String userName);
+
+	public List<CheckItem> getCheckItemListByRegisterId(String registerId, int flag);
+
+	public List<MedicinePerscription> getMpListByRegisterId(String registerId, int flag);
+
+	public void updatePayment(String registerId);
+	
+	/**
+	 * 单个逐条进行退费
+	 *(如果是多条进行退还，可在controller层进行循环returnPayment方法)
+	 *
+	 *根据药品和检查项分开处理如下操作
+	 *1、更新退款金额和退款数量
+	 *2、更新药品库库存数量，退款库存量需加上退款数量
+	 *3、费用流水表添加（流水id通过uuId自动生成，pay_type为2--退费，退还金额moeny，退还时间为当前时间,挂号id）
+	 *4、费用流水详情（detailId通过uuId自动生成，流水id，药品id/检查项id，type（1-药品，2-检查项））
+	 * 	
+	 * @param returnAmount 退款数量
+	 * @param returnMoeny 退款金额
+	 * @param MedicinePerscription mp 退款的药品信息
+	 * @param CheckItem checkItem 退款的检查项信息
+	 * @param registerId 挂号id
+	 */
+	public boolean returnPaymentMP(String perscriptionId, int returnAmount,double returnMoney,int amount,double money);
+	public boolean returnPaymentCI(String checkID, int returnAmount,double returnMoney,int amount,double money);
+	public boolean returnPaymentNum(String medicineId, int stockQuantity);
+	
+	public List<RegisterInfo> searchRegisterList(String cardNum,String patientName);
+
 }

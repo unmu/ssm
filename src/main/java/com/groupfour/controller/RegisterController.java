@@ -117,6 +117,10 @@ public class RegisterController {
 		doctorInfo.setDoctorId(doctorId);
 
 		RegisterInfo into = new RegisterInfo();
+		String registerId = getUUID(1);//UUID生成10位patientCard
+        System.out.println(registerId);
+        into.setRegisterId(registerId);
+		
 		into.setPatientInfo(patientInfo);
 		into.setDeptInfo(deptInfo);
 		into.setDoctorInfo(doctorInfo);

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.groupfour.dao.PaymentDao">
+
+
+	<resultMap type="RegisterInfo" id="registerUnpaidMap">
+		<id column="register_id" property="registerId" />
+		<result column="flag" property="flag" />
+		<result column="patient_name" property="patientInfo.patientName" />
+		<result column="patient_card" property="patientInfo.patientCard" />
+		<result column="card_num" property="patientInfo.cardNum" />
+		<result column="sex" property="patientInfo.sex" />
+		<result column="age" property="patientInfo.age" />
+		<result column="birthday" property="patientInfo.birthday" />
+		<result column="dept_id" property="deptInfo.deptId" />
+		<result column="dept_type" property="deptInfo.deptType" />
+		<result column="doctor_id" property="doctorInfo.doctorId" />
+		<result column="doctor_name" property="doctorInfo.doctorName" />
+		<result column="expenses_type" property="expensesType" />		
+	</resultMap>
+	
+	<select id="searchRegisterUnpaidListByIDName" resultMap="registerUnpaidMap">
+		SELECT * FROM patient_info p,register_info r,dept_info dept,doctor_info doc
+		WHERE p.patient_card = r.patient_card AND r.dept_id = dept.dept_id 
+		AND r.doctor_id = doc.doctor_id AND p.card_num = #{userID} AND p.patient_name = #{userName}
+	</select>
+	
+	<resultMap type="CheckItem" id="ciMap">
+		<id column="check_id" property="checkID" />
+		<result column="item_id" property="inspectionItem.itemId" />
+		<result column="item_name" property="inspectionItem.itemName" />
+		<result column="price" property="inspectionItem.price" />
+		<result column="unit" property="inspectionItem.unit" />
+		<result column="amount" property="amount" />
+		<result column="money" property="money" />
+		<result column="remark" property="remark" />
+		<result column="returnAmount" property="returnAmount" />
+		<result column="returnMoney" property="returnMoney" />
+	</resultMap>
+	
+	
+	<select id="getCheckItemListByRegisterId" resultMap="ciMap">
+		select * from check_item ci,inspection_item ii
+		<where>
+			ci.item_id = ii.item_id
+			<if test="registerId != null and registerId != ''">
+				and ci.register_id=#{registerId}
+			</if>
+			<if test="flag != null">
+				and ci.flag=#{flag}
+			</if>
+		</where>
+	</select>
+	
+	
+	<resultMap type="medicinePerscription" id="mpMap">
+		<id column="perscription_id" property="perscriptionId" />
+		<result column="medicine_id" property="medicineInfo.medicineId" />
+		<result column="medicine_no" property="medicineInfo.medicineNo" />
+		<result column="medicine_name" property="medicineInfo.medicineName" />
+		<result column="dosage" property="medicineInfo.dosage" />
+		<result column="price" property="medicineInfo.price" />
+		<result column="stock_quantity" property="medicineInfo.stockQuantity" />
+		<result column="unit" property="medicineInfo.unit" />
+		<result column="amount" property="amount" />
+		<result column="money" property="money" />
+		<result column="remark" property="remark" />
+		<result column="returnAmount" property="returnAmount" />
+		<result column="returnMoney" property="returnMoney" />
+	</resultMap>
+	<select id="getMpListByRegisterId" resultMap="mpMap">
+		select * from medicine_perscription mp,medicine_info mi
+		<where>
+			mp.medicine_id = mi.medicine_id
+			<if test="registerId != null and registerId != ''">
+				and mp.register_id=#{registerId}
+			</if>
+			<if test="flag != null">
+				and mp.flag=#{flag}
+			</if>
+		</where>
+	</select>
+	
+	<update id="updateMedicineInfo">
+		UPDATE medicine_info set stock_quantity = stock_quantity - #{amount} WHERE medicine_id = #{medicineId}
+	</update>
+	
+	<update id="updateMedicinePerscription">
+		UPDATE medicine_perscription set flag = #{flag} WHERE register_id = #{registerId}
+	</update>
+	
+	<update id="updateCheckItem">
+		UPDATE check_item set flag = #{flag} WHERE register_id = #{registerId}
+	</update>
+	
+	<select id="searchRegisterList" resultMap="registerUnpaidMap">
+		select * from patient_info p,register_info r,dept_info dept,doctor_info doctor where
+		  p.patient_card = r.patient_card and r.dept_id=dept.dept_id and r.doctor_id=doctor.doctor_id
+		    and p.card_num = #{cardNum} and p.patient_name = #{patientName}
+	</select>
+	
+	<update id="returnPaymentMP">
+		update medicine_perscription
+		set return_amount = #{returnAmount},return_money=#{returnMoney},amount=#{amount},money=#{money}
+		where
+		perscription_id = #{perscriptionId}
+	</update>
+	<update id="returnPaymentNum">
+		update medicine_info
+		set stock_quantity = #{stockQuantity}
+		where
+		medicine_id = #{medicineId}
+	</update>
+	<update id="returnPaymentCI">
+		update check_item
+		set return_amount = #{returnAmount},return_money=#{returnMoney},amount=#{amount},money=#{money}
+		where
+		check_id = #{checkID}
+	</update>
+
+</mapper>

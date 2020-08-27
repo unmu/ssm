@@ -83,8 +83,7 @@ public class DiagnosisServiceImpl implements DiagnosisService {
 
 	@Override
 	public List<CheckItem> getCheckItemListByRegisterId(String registerId, Integer flag) {
-		// TODO Auto-generated method stub
-		return null;
+		return diagnosisDao.getCheckItemListByRegisterId(registerId, flag);
 	}
 	
 	@Override
