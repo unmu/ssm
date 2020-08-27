@@ -63,7 +63,7 @@ a:hover {
 	<div data-options="region:'center',title:'主页面'">
 		<iframe name="mainFrame"
 			style="width: 100%; height: 99%; border: none; padding: 10px; overflow: auto;"
-			src=""></iframe>
+			src="jsp/welcome.jsp"></iframe>
 	</div>
 </body>
 </html>

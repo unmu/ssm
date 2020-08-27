@@ -73,23 +73,22 @@ public class RoleController {
 	public List<Menu> getMenuListByRoleId(Integer roleId) {
 		System.out.println("getMenuListByRoleId");
 		List<Menu> menuList = service.getMenusByRoleId(roleId);
-//		for (Menu menu : menuList) {
-//			List<Menu> childMenu  = menu.getChildrenMenuList();
-//		}
 		return menuList;
 	}
 	
 	@RequestMapping("editRoleMenu")
 	@ResponseBody
 	public boolean editRoleMenu(Integer roleId, String menus) {
-		System.out.println("editRoleMenu");
+		System.out.println("editRoleMenu " + menus);
+		if (menus == "") {
+			return service.editRoleMenu(roleId, null);
+		}
 		String str = menus.endsWith("|") ? menus.substring(0, menus.length() - 1) : menus;
 		String[] str1 = str.split("\\|");
 		Integer[] menuIds = new Integer[str1.length];
 		for (int i = 0; i < str1.length; i++) {
 			menuIds[i] = Integer.valueOf(str1[i]);
 		}
-		System.out.println(service.editRoleMenu(roleId, menuIds));
 		return service.editRoleMenu(roleId, menuIds);
 	}
 

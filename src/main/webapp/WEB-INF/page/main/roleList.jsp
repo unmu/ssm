@@ -160,7 +160,7 @@
                     }
                 },
                 error: function (data, textStatus) {
-                    alert("error: " + textStatus)
+                    //alert("error: " + textStatus)
                 }
             })
         }
@@ -179,10 +179,11 @@
                     if (textStatus == "success") {
                         alert("权限变更成功");
                         $("#menu").window("close");
+                        window.location.href = "<%=path%>/role/roleList";
                     }
                 },
                 error: function (data, textStatus) {
-                    alert("error: " + textStatus)
+                    alert("error");
                 }
             });
         }

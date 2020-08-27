@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.groupfour.dao.MedicineDao">	
+
+	<resultMap type="medicineInfo" id="mpMap">
+		<id column="medicine_id" property="medicineId" />
+		<result column="medicine_name" property="medicineName" />
+		<result column="dosage" property="dosage" />
+		<result column="price" property="price" />
+		<result column="stock_quantity" property="stockQuantity" />		
+		<result column="unit" property="unit" />
+		<result column="effective_date" property="effectiveDate" />
+	</resultMap>
+	
+	<select id="getMedicineList" resultMap="mpMap">
+		select * from medicine_info where medicine_name like concat('%',#{medicineName},'%')
+	</select>
+	
+	
+	<!-- 查询全部药 -->
+	<resultMap type="medicineInfo" id="medicineMap">
+	    <id column="medicine_id" property="medicineId" />
+		<result column="medicine_name" property="medicineName" />
+		<result column="dosage" property="dosage" />
+		<result column="price" property="price" />
+		<result column="stock_quantity" property="stockQuantity" />				
+	</resultMap>	
+	<select id="getAllMedicineList" resultMap="medicineMap">
+	     select * from medicine_info	
+	</select>
+	
+</mapper>

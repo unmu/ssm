@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.groupfour.dao.PatientDao">
+	<resultMap type="patientInfo" id="patientMap">
+		<id column="patient_card" property="patientCard" />
+		<result property="patientName" column="patient_name" />
+		<result property="cardNum" column="card_num" />
+	</resultMap>
+	<select id="searchPatientByNameAndCardNum"
+		resultType="patientInfo">
+		SELECT *
+		FROM patient_info
+		WHERE patient_name like
+		concat('%',#{patientName},'%')
+		<if test="cardNum != ''">
+			and card_num = #{cardNum}
+		</if>
+	</select>
+
+	<select id="getPatientByPatientCard" resultType="patientInfo">
+		select *
+		from
+		patient_info
+		where patient_card = #{patientCard}
+	</select>
+
+	<insert id="insertPatientInfo">
+		insert into patient_info(patient_card, patient_name,
+		sex, age, birthday,
+		address, card_num, tel, nationality, nation, profession, marriage)
+		values(#{patientCard}, #{patientName}, #{sex}, #{age}, #{birthday},
+		#{address}, #{cardNum}, #{tel}, #{nationality}, #{nation},
+		#{profession}, #{marriage})
+	</insert>
+</mapper>

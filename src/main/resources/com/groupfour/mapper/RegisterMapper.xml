@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.groupfour.dao.RegisterDao">
+
+	<resultMap type="deptInfo" id="deptMap">
+		<result column="dept_id" property="deptId" />
+		<result column="dept_name" property="deptName" />
+		<result column="dept_type" property="deptType" />
+	</resultMap>
+
+	<resultMap type="doctorInfo" id="doctorMap">
+		<result column="doctor_id" property="doctorId" />
+		<result column="doctor_name" property="doctorName" />
+		<result column="sex" property="sex" />
+		<result column="age" property="age" />
+		<result column="work_age" property="workAge" />
+		<result column="dept_id" property="deptInfo.deptId" />
+	</resultMap>
+
+	<select id="getDeptInfoList" resultMap="deptMap">
+		select dept_id,dept_name,dept_type from dept_info
+	</select>
+
+	<select id="getDoctInfoListByDeptId" resultMap="doctorMap">
+		select doctor_id,doctor_name,sex,age,dept_id,work_age from doctor_info where dept_id = #{deptId}
+	</select>
+
+
+	<insert id="addRegisterInfo" parameterType="com.groupfour.entity.RegisterInfo">
+		insert into register_info(register_id,patient_card,dept_id,doctor_id,expenses_type,diagnosis_type,register_type,money,flag,register_time)
+		values(replace(uuid(),'-',''),#{patientInfo.patientCard},#{deptInfo.deptId},#{doctorInfo.doctorId},#{expensesType},#{diagnosisType},#{registerType},#{money},#{flag},now())
+	</insert>
+
+
+</mapper>
