@@ -150,9 +150,7 @@
          	 }
        })
      }
-      function savehMedicine(){
-     	 $('#dg').datagrid('hideColumn','action')
-      }
+      
 
 
     </script>
@@ -356,6 +354,9 @@ function formatterBtn(value,row,index){
    	}
 
 
+        function savehMedicine(){
+       	 $('#dg_list').datagrid('hideColumn','action');
+        }
     </script>
     <!-- 检查项目 end -->
 
@@ -563,11 +564,11 @@ function formatterBtn(value,row,index){
 
 
 
-
+<!-- 
             <div style="padding: 10px 0 10px 93%; display: inline-block;">
                 <a href="#" class="easyui-linkbutton" width="50px" title="保存">保存</a>
             </div>
-
+ -->
 
         </div>
 
@@ -733,12 +734,12 @@ function formatterBtn(value,row,index){
                     </c:forEach>
                 </tbody>
             </table>
-
+<!-- 
             <div style="padding: 10px 0 10px 93%; display: inline-block;">
                 <a href="#" class="easyui-linkbutton" iconCls="icon-ok"
                    style="width: 100px; height: 32px" onclick="savehMedicine();">保存</a>
             </div>
-
+ -->
         </div>
 
 

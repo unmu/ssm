@@ -35,6 +35,7 @@
 	<script type="text/javascript">
 	function saveDiagnosisInfo(){
 		var items = $("#diagnosisForm").serialize();
+		var registerId = $('#registerIdUse').val();
 		//alert(items);
         $.ajax({
            url:"<%=path%>/dt/saveDiagnosisInfo",
@@ -43,7 +44,7 @@
            success:function(data,textStatus){   
               if(data == true) {
             	  alert("诊断完成，前往处方页面。");
-            	  window.location.href="<%=path%>/dt/patientPerscription";
+            	  window.location.href="<%=path%>/dt/patientPerscription?registerId=" + registerId;
               } else {
             	  //alert("111");
               }
@@ -73,7 +74,7 @@
 	  <div class="easyui-tabs" style="width:98%;min-height:99%;">
 		<div title="诊断信息" style="padding:10px">
 		<form class="form-inline" id="diagnosisForm" >
-			<input type="hidden" name="registerInfo.registerId" value="${registerInfo.registerId }">
+			<input type="hidden" name="registerInfo.registerId" id="registerIdUse" value="${registerInfo.registerId }">
 			<div style="margin-left: 10px; float: left; line-height: 32px; width: 200px;font-weight: bold;">病历号：<span style="color: #CD5C5C;">
 				${registerInfo.patientInfo.patientCard}</span></div>
 			<div style="float: left; line-height: 32px; width: 150px;font-weight: bold;">姓名：

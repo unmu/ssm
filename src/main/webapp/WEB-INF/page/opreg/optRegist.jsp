@@ -44,57 +44,22 @@
 <script type="text/javascript" 
 		src="https://cdn.jsdelivr.net/jquery.bootstrapvalidator/0.5.2/js/bootstrapValidator.min.js"></script>
 	 -->
-<link rel="stylesheet"
-	href="//cdn.jsdelivr.net/fontawesome/4.1.0/css/font-awesome.min.css" />
-<link rel="stylesheet"
+<!-- <link rel="stylesheet"
+	href="//cdn.jsdelivr.net/fontawesome/4.1.0/css/font-awesome.min.css" /> -->
+<!-- <link rel="stylesheet"
 	href="//cdn.jsdelivr.net/jquery.bootstrapvalidator/0.5.0/css/bootstrapValidator.min.css" />
-<!-- jQuery and Bootstrap JS -->
+jQuery and Bootstrap JS
 <script type="text/javascript"
 	src="//cdn.jsdelivr.net/jquery/1.11.1/jquery.min.js"></script>
-<!-- <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap/3.2.0/js/bootstrap.min.js"></script> -->
-<!-- BootstrapValidator JS -->
+<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+BootstrapValidator JS
 <script type="text/javascript"
-	src="//cdn.jsdelivr.net/jquery.bootstrapvalidator/0.5.0/js/bootstrapValidator.min.js"></script>
+	src="//cdn.jsdelivr.net/jquery.bootstrapvalidator/0.5.0/js/bootstrapValidator.min.js"></script> -->
 
 <script type="text/javascript">
 $(document).ready(function () { 
 	// 页面加载后，初始化科室基本信息
     getDeptInfoList();
-	// 添加病人输入信息为空验证
-	$('#addPtForm').bootstrapValidator();//还未实现成功
-	 /* $('#addPtForm').bootstrapValidator({
-		//alert("1231");
-		message: 'This value is not valid',
-        feedbackIcons: {
-        	valid:'glyphicon glyphicon-ok',
-        	invalid: 'glyphicon glyphicon-remove',
-        	validating: 'glyphicon glyphicon-refresh'
-        	},
-            fields: {
-            	addPtName: {
-                    message: '用户名验证失败',
-                    validators: {
-                        notEmpty: {
-                            message: '姓名不能为空'
-                        }
-                    }
-                },
-                addCardNum: {
-                    validators: {
-                        notEmpty: {
-                            message: '身份证号不能为空'
-                        }
-                    }
-                },
-                addTel: {
-                    validators: {
-                        notEmpty: {
-                            message: '电话号码不能为空'
-                        }
-                    }
-                }
-            }
-        });  */
 });
 //获取科室信息
 function getDeptInfoList() {
@@ -245,12 +210,12 @@ function searchPatient(){
 												+ '</th><td id="ptName">' + item.patientName
 												+ '</td><td id="ptSex">' + pSex
 												+ '</td><td id="ptAge">' + item.age
-												+ '</td><td id="ptBirth">' + item.birthday
+												+ '</td><td id="ptBirth">' + item.cardNum
 												+ '</td></tr>');
 							});
 				} else if (data.length == 0) {//查不到病人信息
 					//alert("查不到病人信息");
-					$('#addPatientModal').empty();
+					//$('#addPatientModal').empty();
 					$('#addPatientModal').modal('toggle');
 					$('#addPatientModal').on(
 							'show.bs.modal',
@@ -304,7 +269,7 @@ function selectPatientBtn(patientCard, index){
 								+ '</th><td id="ptName">' + data.patientName
 								+ '</td><td id="ptSex">' + pSex
 								+ '</td><td id="ptAge">' + data.age
-								+ '</td><td id="ptBirth">' + data.birthday
+								+ '</td><td id="ptBirth">' + data.cardNum
 								+ '</td></tr>');
             	$('#patientListModal').modal('toggle');
             	$('#patientListModal').on(
@@ -325,8 +290,8 @@ function insertPatient() {
 	var ptName = $('#addPtName').val();
 	var ptSex = $('#addPtSex').val();
 	var ptAge = $('#addPtAge').val();
-	//alert(ptName);
 	var cardNum = $('#addCardNum').val();
+	//alert(cardNum);
 	var tel = $('#addTel').val();
 	var address = $('#addAddress').val();
 	var nationality = $('#addNationality').val();
@@ -335,7 +300,7 @@ function insertPatient() {
 	var pro = $('#addPro').val();
 	var blood = $('#addBlood').val();
 	var marriage = $('#addMarriage').val();
-	if (ptName == "" || cardName == "" || tel == "") {
+	if (ptName == "" || cardNum == "" || tel == "") {
 		alert("姓名、身份证号、电话号码不能为空");
 	} else {
 	var args = {patientName: ptName, sex: ptSex, age: ptAge, cardNum: cardNum, tel: tel, address: address, 
@@ -366,7 +331,7 @@ function insertPatient() {
 								+ '</th><td id="ptName">' + data.patientName
 								+ '</td><td id="ptSex">' + pSex
 								+ '</td><td id="ptAge">' + data.age
-								+ '</td><td id="ptBirth">' + data.birthday
+								+ '</td><td id="ptBirth">' + data.cardNum
 								+ '</td></tr>');
 			}
 		},
@@ -408,17 +373,12 @@ function refreshPage() {
 				<div class="modal-body">
 					<!-- 模态框主内容 -->
 
-					<form class="form-horizontal" method="post" id="addPtForm"
-						data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
-						data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
-						data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
+					<form class="form-horizontal" method="post" id="addPtForm">
 						<!-- 卡号 UUID 生成 -->
 						<div class="form-group">
 							<label class="control-label col-sm-2" style="width: 20%">姓名</label>
 							<input type="text" class="form-control col-sm-7"
-								style="width: 70%" placeholder="姓名" id="addPtName"
-								name="addPtName" data-bv-notempty="true"
-								data-bv-notempty-message="The username is required and cannot be empty">
+								style="width: 70%" placeholder="姓名" id="addPtName">
 						</div>
 						<div class="form-group">
 							<label class="control-label col-sm-2" style="width: 20%">性别</label>
@@ -435,13 +395,12 @@ function refreshPage() {
 						<div class="form-group">
 							<label class="control-label col-sm-2" style="width: 20%">身份证号</label>
 							<input type="text" class="form-control col-sm-8"
-								style="width: 70%" placeholder="身份证号" id="addCardNum"
-								name="addCardNum">
+								style="width: 70%" placeholder="身份证号" id="addCardNum">
 						</div>
 						<div class="form-group">
 							<label class="control-label col-sm-2" style="width: 20%">电话号码</label>
 							<input type="text" class="form-control col-sm-8"
-								style="width: 70%" placeholder="电话号码" id="addTel" name="addTel">
+								style="width: 70%" placeholder="电话号码" id="addTel">
 						</div>
 						<div class="form-group">
 							<label class="control-label col-sm-2" style="width: 20%">居住地址</label>
@@ -632,7 +591,7 @@ function refreshPage() {
 					<th>姓名</th>
 					<th>性别</th>
 					<th>年龄</th>
-					<th>出生日期</th>
+					<th>身份证号</th>
 				</tr>
 			</thead>
 			<tbody>
