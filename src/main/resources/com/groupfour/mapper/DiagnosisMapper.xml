@@ -87,6 +87,11 @@
 		values(#{registerId},#{medicineId},#{num}, #{money})
 	</insert>
 
+	<delete id="deleteMedicinePerscriptionByPerscriptionId">
+		delete from medicine_perscription
+		where perscription_id = #{perscriptionId}
+	</delete> 
+	
 	<resultMap type="CheckItem" id="ciMap">
 		<id column="check_id" property="checkID" />
 		<result column="item_id" property="inspectionItem.itemId" />
@@ -132,6 +137,7 @@
 		resultType="diagnosisInfo">
 		select * from diagnosis_info where register_id=#{registerId}
 	</select>
+
 
 
 </mapper>

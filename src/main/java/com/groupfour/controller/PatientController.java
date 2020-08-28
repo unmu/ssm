@@ -17,6 +17,7 @@ import com.groupfour.entity.MedicineInfo;
 import com.groupfour.entity.MedicinePerscription;
 import com.groupfour.entity.RegisterInfo;
 import com.groupfour.entity.Users;
+import com.groupfour.service.CheckItemService;
 import com.groupfour.service.DiagnosisService;
 import com.groupfour.service.MedicineService;
 
@@ -29,6 +30,9 @@ public class PatientController {
 	
 	@Autowired
 	private MedicineService medicineService;
+	
+//	@Autowired
+//	private CheckItemService checkItemSerive;
 	
 	@RequestMapping("optPatient")
 	public String optPatientA(Model model,HttpSession session){
@@ -80,8 +84,8 @@ public class PatientController {
 	@ResponseBody
 	public List<InspectionItem> searchItemInfoList(String itemName) {
 			
-		List<InspectionItem> list;
-		list=medicineService.getInspectionItemList(itemName);
+		List<InspectionItem> list = new ArrayList();
+		list = medicineService.getInspectionItemList(itemName);
 		System.out.println("查询检查信息的条数"+list.size());
 		return list;
 			
@@ -105,6 +109,14 @@ public class PatientController {
 	public boolean addMedic(String registerId,String medicineId,int num, double money){		
 		boolean flag = diagnosisService.addMedicinePerscriptions(registerId,medicineId,num, money);	
         return flag;
+	}
+	
+	@RequestMapping("deleteMedicinePerscriptionByPerscriptionId")
+	@ResponseBody
+	public boolean deleteMedicinePerscriptionByPerscriptionId(int perscriptionId) {
+		System.out.println(perscriptionId);
+		boolean flag = diagnosisService.deleteMedicinePerscriptionByPerscriptionId(perscriptionId);
+		return flag;
 	}
 	
 }

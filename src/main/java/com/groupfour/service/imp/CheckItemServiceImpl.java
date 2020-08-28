@@ -6,6 +6,7 @@ import com.groupfour.service.CheckItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -23,5 +24,25 @@ public class CheckItemServiceImpl implements CheckItemService {
         checkItem.setCheckID(UUID.randomUUID().toString());
         checkItemDao.insertCheckItem(checkItem);
         return true;
+    }
+    
+    public boolean removeItem(String checkId){
+    	int flag=checkItemDao.deleteById(checkId);
+    	if(flag==1)return true;
+    	else return false;
+    	
+    }
+    public boolean updateCheckItem(CheckItem checkItem){
+    	int flag = checkItemDao.updateById(checkItem);
+    	if(flag==1)return true;
+    	else return false;
+    }
+    public boolean addCheckItems(List<CheckItem> checkItems){
+    	
+    	for(CheckItem c:checkItems){
+    		
+    		 checkItemDao.insertCheckItem(c);
+    	}
+    	return true;
     }
 }

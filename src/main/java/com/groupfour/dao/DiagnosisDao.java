@@ -26,4 +26,6 @@ public interface DiagnosisDao {
 	public void insertDiagnosisInfo(DiagnosisInfo diagnosisInfo);
 	
 	public DiagnosisInfo getDiagnosisInfoByRegisterId(String registerId);
+
+	public void deleteMedicinePerscriptionByPerscriptionId(@Param("perscriptionId")int perscriptionId);
 }

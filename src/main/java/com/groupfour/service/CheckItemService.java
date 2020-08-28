@@ -1,5 +1,7 @@
 package com.groupfour.service;
 
+import java.util.List;
+
 import com.groupfour.entity.CheckItem;
 
 /**
@@ -13,4 +15,8 @@ public interface CheckItemService {
      * @param checkItem
      */
     public boolean insertCheckItem(CheckItem checkItem);
+    
+    public boolean removeItem(String checkId);
+    public boolean updateCheckItem(CheckItem checkItem);
+    public boolean addCheckItems(List<CheckItem> checkItems);
 }

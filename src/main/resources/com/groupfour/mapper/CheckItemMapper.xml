@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.groupfour.dao.CheckItemDao">
+
+
+   <insert id="insertCheckItem" useGeneratedKeys="true" keyProperty="checkID" parameterType="com.groupfour.entity.CheckItem">
+       insert into check_item(check_id,register_id,item_id,amount,money,return_amount,return_money,flag,remark)
+       values(#{checkID},#{registerID},#{itemID},#{amount},#{money},#{returnAmount},#{returnMoney},#{flag},#{remark})
+   </insert>
+
+  <delete id="deleteById" >
+    delete from check_item where check_id=#{checkId}
+  </delete>
+
+  <update id="updateById" parameterType="com.groupfour.entity.CheckItem">
+  	update check_item set amount=#{amount},remark=#{remark} where check_id=#{checkId}
+  </update>
+
+</mapper>

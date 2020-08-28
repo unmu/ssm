@@ -1,12 +1,10 @@
 package com.groupfour.dao;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.groupfour.entity.CheckItem;
 
-/**
- * @author hezhiyu
- * @project hosp
- * @create 2020-08-27 21:06
- */
+
 public interface CheckItemDao {
 
     /**
@@ -14,4 +12,7 @@ public interface CheckItemDao {
      * @param checkItem
      */
     public void insertCheckItem(CheckItem checkItem);
+
+    public int deleteById(@Param("checkId")String checkId);
+    public int updateById(CheckItem checkItem); 
 }

@@ -111,4 +111,10 @@ public interface DiagnosisService {
 
 	public boolean addMedicinePerscriptions(String registerId, String medicineId, int num, double money);
 
+	/**
+	 * 删除某条药品信息
+	 * @param perscriptionId
+	 * @return
+	 */
+	public boolean deleteMedicinePerscriptionByPerscriptionId(int perscriptionId);
 }

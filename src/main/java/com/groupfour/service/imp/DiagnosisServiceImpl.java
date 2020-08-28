@@ -104,4 +104,15 @@ public class DiagnosisServiceImpl implements DiagnosisService {
 	public boolean addMedicinePerscriptions(String registerId,String medicineId,int num, double money) {
 		return diagnosisDao.addMedicinePerscription(registerId,medicineId,num, money);
 	}
+	
+	@Override
+	public boolean deleteMedicinePerscriptionByPerscriptionId(int perscriptionId) {
+	  try {
+		  diagnosisDao.deleteMedicinePerscriptionByPerscriptionId(perscriptionId);
+          return true;
+      }catch (Exception e){
+	        e.printStackTrace();
+          return false;
+      }
+	}
 }

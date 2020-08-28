@@ -44,8 +44,8 @@ public class MedicineServiceImpl implements MedicineService{
 
 	@Override
 	public List<InspectionItem> getInspectionItemList(String itemName) {
-		// TODO Auto-generated method stub
-		return null;
+		List<InspectionItem> list=medicinedao.getInspectionItemList(itemName);
+		return list;
 	}
 
 	@Override
