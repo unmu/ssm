@@ -5,8 +5,10 @@
 	<resultMap type="RegisterInfo" id="reMap">
 		<id column="register_id" property="registerId" />
 		<result column="flag" property="flag" />
-		<result column="patient_card" property="patientInfo.patientCard" />
-		<result column="patient_name" property="patientInfo.patientName" />
+		<result column="patient_card"
+			property="patientInfo.patientCard" />
+		<result column="patient_name"
+			property="patientInfo.patientName" />
 		<result column="sex" property="patientInfo.sex" />
 		<result column="age" property="patientInfo.age" />
 		<result column="card_num" property="patientInfo.cardNum" />
@@ -17,10 +19,35 @@
 		<result column="doctor_id" property="doctorInfo.doctorId" />
 		<result column="doctor_name" property="doctorInfo.doctorName" />
 	</resultMap>
+
+	<select id="getRegisterInfoByDoctorId" parameterType="String"
+		resultMap="reMap">
+		select * from patient_info p,register_info r,dept_info
+		dept,doctor_info doctor where
+		p.patient_card = r.patient_card and
+		r.dept_id=dept.dept_id and
+		r.doctor_id=doctor.doctor_id
+		and
+		left(register_time,10)=curdate()
+		<if test="doctorId != 'admin' and doctorId !=''">
+			and doctor.doctor_id=#{doctorId}
+		</if>
+		order by register_time
+	</select>
+
+	<insert id="insertDiagnosisInfo" useGeneratedKeys="true"
+		keyProperty="diagnosisId">
+		insert into
+		diagnosis_info(register_id,onset_date,narration,hpi,pmp,allergy_history,diag_content,diag_remarks,disposal_plan)
+		values(#{registerInfo.registerId},#{onsetDate},#{narration},#{hpi},#{pmp},#{allergyHistory},#{diagContent},#{diagRemarks},#{disposalPlan})
+	</insert>
+
 	<select id="getRegisterInfoByRegisterId" resultMap="reMap">
-		select * from patient_info p,register_info r,dept_info dept,doctor_info doctor where
-		  p.patient_card = r.patient_card and r.dept_id=dept.dept_id and r.doctor_id=doctor.doctor_id
-		    and r.register_id=#{registerId}
+		select * from
+		patient_info p,register_info r,dept_info dept,doctor_info doctor where
+		p.patient_card = r.patient_card and r.dept_id=dept.dept_id and
+		r.doctor_id=doctor.doctor_id
+		and r.register_id=#{registerId}
 	</select>
 
 	<resultMap type="medicinePerscription" id="mpMap">
@@ -28,10 +55,12 @@
 		<result column="register_id" property="registerId" />
 		<result column="medicine_id" property="medicineInfo.medicineId" />
 		<result column="medicine_no" property="medicineInfo.medicineNo" />
-		<result column="medicine_name" property="medicineInfo.medicineName" />
+		<result column="medicine_name"
+			property="medicineInfo.medicineName" />
 		<result column="dosage" property="medicineInfo.dosage" />
 		<result column="price" property="medicineInfo.price" />
-		<result column="stock_quantity" property="medicineInfo.stockQuantity" />
+		<result column="stock_quantity"
+			property="medicineInfo.stockQuantity" />
 		<result column="unit" property="medicineInfo.unit" />
 		<result column="amount" property="amount" />
 		<result column="money" property="money" />
@@ -51,9 +80,58 @@
 			</if>
 		</where>
 	</select>
-	
-	<insert id="addMedicinePerscription" >
-         insert into medicine_perscription (register_id,medicine_id,amount) values(#{registerId},#{medicineId},#{num})     
-     </insert> 
-	
+
+	<insert id="addMedicinePerscription">
+		insert into medicine_perscription
+		(register_id,medicine_id,amount,money)
+		values(#{registerId},#{medicineId},#{num}, #{money})
+	</insert>
+
+	<resultMap type="CheckItem" id="ciMap">
+		<id column="check_id" property="checkID" />
+		<result column="item_id" property="inspectionItem.itemId" />
+		<result column="item_name" property="inspectionItem.itemName" />
+		<result column="price" property="inspectionItem.price" />
+		<result column="unit" property="inspectionItem.unit" />
+		<result column="amount" property="amount" />
+		<result column="money" property="money" />
+		<result column="remark" property="remark" />
+		<result column="return_amount" property="returnAmount" />
+		<result column="return_money" property="returnMoney" />
+	</resultMap>
+	<select id="getCheckItemListByRegisterId" resultMap="ciMap">
+		select * from check_item ci,inspection_item ii
+		<where>
+			ci.item_id = ii.item_id
+			<if test="registerId != null and registerId != ''">
+				and ci.register_id=#{registerId}
+			</if>
+			<if test="flag != null">
+				and ci.flag=#{flag}
+			</if>
+		</where>
+	</select>
+
+	<resultMap type="medicinePerscription" id="checkMap">
+		<id column="chenck_id" property="checkId" />
+		<result column="medicine_id" property="medicineInfo.medicineId" />
+		<result column="medicine_name"
+			property="medicineInfo.medicineName" />
+		<result column="dosage" property="medicineInfo.dosage" />
+		<result column="price" property="medicineInfo.price" />
+		<result column="stock_quantity"
+			property="medicineInfo.stockQuantity" />
+		<result column="unit" property="medicineInfo.unit" />
+		<result column="amount" property="amount" />
+		<result column="money" property="money" />
+		<result column="remark" property="remark" />
+		<result column="returnAmount" property="returnAmount" />
+		<result column="returnMoney" property="returnMoney" />
+	</resultMap>
+	<select id="getDiagnosisInfoByRegisterId" parameterType="String"
+		resultType="diagnosisInfo">
+		select * from diagnosis_info where register_id=#{registerId}
+	</select>
+
+
 </mapper>

@@ -20,18 +20,26 @@
 	</resultMap>
 
 	<select id="getDeptInfoList" resultMap="deptMap">
-		select dept_id,dept_name,dept_type from dept_info
+		select
+		dept_id,dept_name,dept_type from dept_info
 	</select>
 
 	<select id="getDoctInfoListByDeptId" resultMap="doctorMap">
-		select doctor_id,doctor_name,sex,age,dept_id,work_age from doctor_info where dept_id = #{deptId}
+		select
+		doctor_id,doctor_name,sex,age,dept_id,work_age from doctor_info where
+		dept_id = #{deptId}
 	</select>
 
 
-	<insert id="addRegisterInfo" parameterType="com.groupfour.entity.RegisterInfo">
-		insert into register_info(register_id,patient_card,dept_id,doctor_id,expenses_type,diagnosis_type,register_type,money,flag,register_time)
+	<insert id="addRegisterInfo"
+		parameterType="com.groupfour.entity.RegisterInfo">
+		insert into
+		register_info(register_id,patient_card,dept_id,doctor_id,expenses_type,diagnosis_type,register_type,money,flag,register_time)
 		values(#{registerId},#{patientInfo.patientCard},#{deptInfo.deptId},#{doctorInfo.doctorId},#{expensesType},#{diagnosisType},#{registerType},#{money},#{flag},now())
 	</insert>
 
+	<update id="updateFlagByRegisterId">
+		update register_info set flag = #{flag} where register_id=#{registerId}
+	</update>
 
 </mapper>

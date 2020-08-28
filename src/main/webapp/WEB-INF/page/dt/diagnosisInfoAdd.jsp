@@ -34,15 +34,18 @@
 	
 	<script type="text/javascript">
 	function saveDiagnosisInfo(){
-		var items=  $("#diagnosisForm").serialize();
+		var items = $("#diagnosisForm").serialize();
+		//alert(items);
         $.ajax({
            url:"<%=path%>/dt/saveDiagnosisInfo",
            type:"post",
            data:items,
            success:function(data,textStatus){   
-              if(data) {
+              if(data == true) {
             	  alert("诊断完成，前往处方页面。");
-            	  window.location.href="<%=path%>/dt/patientPerscription"
+            	  window.location.href="<%=path%>/dt/patientPerscription";
+              } else {
+            	  //alert("111");
               }
            } ,
            error:function(){

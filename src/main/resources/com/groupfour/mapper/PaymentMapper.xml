@@ -95,6 +95,9 @@
 		UPDATE check_item set flag = #{flag} WHERE register_id = #{registerId}
 	</update>
 	
+	
+	
+	<!-- yjy  -->
 	<select id="searchRegisterList" resultMap="registerUnpaidMap">
 		select * from patient_info p,register_info r,dept_info dept,doctor_info doctor where
 		  p.patient_card = r.patient_card and r.dept_id=dept.dept_id and r.doctor_id=doctor.doctor_id

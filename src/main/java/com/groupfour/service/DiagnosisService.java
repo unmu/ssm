@@ -109,6 +109,6 @@ public interface DiagnosisService {
 	 */
 	public List<CheckItem> getCheckItemListByRegisterId(String registerId,Integer flag);
 
-	public boolean addMedicinePerscriptions(String registerId, String medicineId, int num);
+	public boolean addMedicinePerscriptions(String registerId, String medicineId, int num, double money);
 
 }

@@ -23,6 +23,16 @@ public class MedicineInfo {
 	private String effectiveDate;
 	
 	private String factory;
+	
+	private Integer num;
+
+	public Integer getNum() {
+		return num;
+	}
+
+	public void setNum(Integer num) {
+		this.num = num;
+	}
 
 	public String getMedicineId() {
 		return medicineId;

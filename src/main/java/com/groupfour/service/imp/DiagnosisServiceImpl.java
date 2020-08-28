@@ -1,11 +1,14 @@
 package com.groupfour.service.imp;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.groupfour.dao.DiagnosisDao;
+import com.groupfour.dao.RegisterDao;
 import com.groupfour.entity.CheckItem;
 import com.groupfour.entity.DiagnosisInfo;
 import com.groupfour.entity.MedicinePerscription;
@@ -17,11 +20,13 @@ public class DiagnosisServiceImpl implements DiagnosisService {
 
 	@Autowired
 	private DiagnosisDao diagnosisDao;
+	
+	@Autowired
+	private RegisterDao registerDao;
 
 	@Override
 	public List<RegisterInfo> getRegisterInfoByDoctorId(String doctorId) {
-		// TODO Auto-generated method stub
-		return null;
+		return diagnosisDao.getRegisterInfoByDoctorId(doctorId);
 	}
 
 	@Override
@@ -30,9 +35,19 @@ public class DiagnosisServiceImpl implements DiagnosisService {
 	}
 
 	@Override
+	@Transactional
 	public boolean insertDiagnosisInfo(DiagnosisInfo info) {
-		// TODO Auto-generated method stub
-		return false;
+		try {
+			info.setDiagnosisId(UUID.randomUUID().toString());
+			diagnosisDao.insertDiagnosisInfo(info);
+			//修改为已就诊
+			registerDao.updateFlagByRegisterId(1, info.getRegisterInfo().getRegisterId());
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		
 	}
 
 	@Override
@@ -72,8 +87,7 @@ public class DiagnosisServiceImpl implements DiagnosisService {
 
 	@Override
 	public DiagnosisInfo getDiagnosisInfoByRegisterId(String registerId) {
-		// TODO Auto-generated method stub
-		return null;
+		return diagnosisDao.getDiagnosisInfoByRegisterId(registerId);
 	}
 
 	@Override
@@ -87,7 +101,7 @@ public class DiagnosisServiceImpl implements DiagnosisService {
 	}
 	
 	@Override
-	public boolean addMedicinePerscriptions(String registerId,String medicineId,int num) {
-		return diagnosisDao.addMedicinePerscription(registerId,medicineId,num);
+	public boolean addMedicinePerscriptions(String registerId,String medicineId,int num, double money) {
+		return diagnosisDao.addMedicinePerscription(registerId,medicineId,num, money);
 	}
 }

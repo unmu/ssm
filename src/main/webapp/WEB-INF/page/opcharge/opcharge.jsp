@@ -68,7 +68,6 @@
 function checkNeg() {
 	var totalPrice = $('#p_total_Price').val();
 	var nowPrice = $('#input_actual_money').val();
-	//alert(totalPrice - nowPrice);
 	if (totalPrice - nowPrice > 0) {
 		$("#btn_charge").addClass('disabled');
 		$("#btn_charge").prop('disabled', true);

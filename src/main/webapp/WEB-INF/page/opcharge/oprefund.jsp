@@ -109,7 +109,7 @@
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-	        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="confirmRegister()">确实</button>
+	        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="confirmRegister()">确定</button>
 	      </div>
 	    </div>
 	  </div>
@@ -361,7 +361,7 @@
             				'<td><input type="text" id="'+ data[i].medicineInfo.medicineName +'"></td>'+
             				'<td>'+data[i].money+'</td>'+
             				'<td>'+refundMoney+'</td>'+
-            				'<td><button class="btn btn-primary" onclick="refundMedic('+data[i].registerId+','+data[i].perscriptionId+','+data[i].medicineInfo.stockQuantity+','+data[i].medicineInfo.medicineId+','+ data[i].medicineInfo.medicineName +','+ data[i].returnAmount +','+ data[i].returnMoney +','+ data[i].money +','+ data[i].amount +','+ data[i].medicineInfo.price +')">退费</button></td>'+
+            				'<td><button class="btn btn-primary" onclick="refundMedic(\''+data[i].registerId+'\',\''+data[i].perscriptionId+'\',\''+data[i].medicineInfo.stockQuantity+'\',\''+data[i].medicineInfo.medicineId+'\',\''+ data[i].medicineInfo.medicineName +'\',\''+ data[i].returnAmount +'\',\''+ data[i].returnMoney +'\',\''+ data[i].money +'\',\''+ data[i].amount +'\',\''+ data[i].medicineInfo.price +'\')">退费</button></td>'+
             				'</tr>';
             				$("#medicBody").append(tr);
             			}
@@ -397,7 +397,7 @@
             				'<td><input type="text" id="'+ data[i].inspectionItem.itemName +'"></td>'+
             				'<td>'+data[i].money+'</td>'+
             				'<td>'+refundMoney+'</td>'+
-            				'<td><button class="btn btn-primary" onclick="refundItem('+data[i].registerID+','+data[i].checkID+','+ data[i].inspectionItem.itemName +','+ data[i].returnAmount +','+ data[i].returnMoney +','+ data[i].money +','+ data[i].amount +','+ data[i].inspectionItem.price +')">退费</button></td>'+
+            				'<td><button class="btn btn-primary" onclick="refundItem(\''+data[i].registerID+'\',\''+data[i].checkID+'\',\''+ data[i].inspectionItem.itemName +'\',\''+ data[i].returnAmount +'\',\''+ data[i].returnMoney +'\',\''+ data[i].money +'\',\''+ data[i].amount +'\',\''+ data[i].inspectionItem.price +'\')">退费</button></td>'+
             				'</tr>';
             				$("#itemBody").append(tr);
             			}
@@ -407,7 +407,9 @@
     	}
     }
     function refundMedic(registerId,perscriptionId,stockQuantity,medicineId,id,returnAmount,returnMoney,money,amount,price){
-    	var refundNum=id.value;
+    	var type=document.getElementById(id);
+    	console.log(type);
+    	var refundNum=type.value;
     	if(returnAmount==null){
     		returnAmount=0;
     	}
@@ -447,7 +449,7 @@
                 				'<td><input type="text" id="'+ data[i].medicineInfo.medicineName +'"></td>'+
                 				'<td>'+data[i].money+'</td>'+
                 				'<td>'+refundMoney+'</td>'+
-                				'<td><button class="btn btn-primary" onclick="refundMedic('+data[i].registerId+','+data[i].perscriptionId+','+data[i].medicineInfo.stockQuantity+','+data[i].medicineInfo.medicineId+','+ data[i].medicineInfo.medicineName +','+ data[i].returnAmount +','+ data[i].returnMoney +','+ data[i].money +','+ data[i].amount +','+ data[i].medicineInfo.price +')">退费</button></td>'+
+                				'<td><button class="btn btn-primary" onclick="refundMedic(\''+data[i].registerId+'\',\''+data[i].perscriptionId+'\',\''+data[i].medicineInfo.stockQuantity+'\',\''+data[i].medicineInfo.medicineId+'\',\''+ data[i].medicineInfo.medicineName +'\',\''+ data[i].returnAmount +'\',\''+ data[i].returnMoney +'\',\''+ data[i].money +'\',\''+ data[i].amount +'\',\''+ data[i].medicineInfo.price +'\')">退费</button></td>'+
                 				'</tr>';
                 				$("#medicBody").append(tr);
                 			}
@@ -459,7 +461,9 @@
     }
 
     function refundItem(registerID,checkID,id,returnAmount,returnMoney,money,amount,price){
-    	var refundNum=id.value;
+    	var type=document.getElementById(id);
+    	console.log(type);
+    	var refundNum=type.value;
     	if(returnAmount==null){
     		returnAmount=0;
     	}
@@ -498,7 +502,7 @@
                 				'<td><input type="text" id="'+ data[i].inspectionItem.itemName +'"></td>'+
                 				'<td>'+data[i].money+'</td>'+
                 				'<td>'+refundMoney+'</td>'+
-                				'<td><button class="btn btn-primary" onclick="refundItem('+data[i].registerID+','+data[i].checkID+','+ data[i].inspectionItem.itemName +','+ data[i].returnAmount +','+ data[i].returnMoney +','+ data[i].money +','+ data[i].amount +','+ data[i].inspectionItem.price +')">退费</button></td>'+
+                				'<td><button class="btn btn-primary" onclick="refundItem(\''+data[i].registerID+'\',\''+data[i].checkID+'\',\''+ data[i].inspectionItem.itemName +'\',\''+ data[i].returnAmount +'\',\''+ data[i].returnMoney +'\',\''+ data[i].money +'\',\''+ data[i].amount +'\',\''+ data[i].inspectionItem.price +'\')">退费</button></td>'+
                 				'</tr>';
                 				$("#itemBody").append(tr);
                 			}
