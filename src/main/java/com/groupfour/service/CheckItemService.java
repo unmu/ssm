@@ -19,4 +19,6 @@ public interface CheckItemService {
     public boolean removeItem(String checkId);
     public boolean updateCheckItem(CheckItem checkItem);
     public boolean addCheckItems(List<CheckItem> checkItems);
+
+	public List<CheckItem> getCheckItemByRegisterId(String registerId);
 }

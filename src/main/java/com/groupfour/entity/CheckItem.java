@@ -2,7 +2,7 @@ package com.groupfour.entity;
 
 public class CheckItem {
 	
-	private String checkID;
+	private Integer checkID;
 	private String registerID;
 	private String itemID; 
 	private int amount; 
@@ -14,17 +14,17 @@ public class CheckItem {
 	private InspectionItem inspectionItem;
 	
 	
+	public Integer getCheckID() {
+		return checkID;
+	}
+	public void setCheckID(Integer checkID) {
+		this.checkID = checkID;
+	}
 	public InspectionItem getInspectionItem() {
 		return inspectionItem;
 	}
 	public void setInspectionItem(InspectionItem inspectionItem) {
 		this.inspectionItem = inspectionItem;
-	}
-	public String getCheckID() {
-		return checkID;
-	}
-	public void setCheckID(String checkID) {
-		this.checkID = checkID;
 	}
 	public String getRegisterID() {
 		return registerID;

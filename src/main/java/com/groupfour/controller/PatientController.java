@@ -1,6 +1,7 @@
 package com.groupfour.controller;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -11,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.groupfour.entity.CheckItem;
 import com.groupfour.entity.DiagnosisInfo;
 import com.groupfour.entity.InspectionItem;
 import com.groupfour.entity.MedicineInfo;
@@ -30,6 +32,9 @@ public class PatientController {
 	
 	@Autowired
 	private MedicineService medicineService;
+	
+	@Autowired
+	private CheckItemService checkItemService;
 	
 //	@Autowired
 //	private CheckItemService checkItemSerive;
@@ -68,7 +73,7 @@ public class PatientController {
 		RegisterInfo registerInfo = diagnosisService.getRegisterInfoByRegisterId(registerId);
 		System.out.println("registerInfo---" + registerInfo.getRegisterId());
 		model.addAttribute("registerInfo", registerInfo);
-		//显示已的诊断信息
+		//显示已诊断信息
 		DiagnosisInfo diagnosisInfo = diagnosisService.getDiagnosisInfoByRegisterId(registerId);
 		System.out.println("diagnosisInfo---" + diagnosisInfo.getDiagnosisId());
 		model.addAttribute("diagnosisInfo", diagnosisInfo);
@@ -76,6 +81,15 @@ public class PatientController {
 		List<MedicinePerscription> mpList = diagnosisService.getMpListByRegisterId(registerId, 0);
 		//System.out.println(mpList.get(0).getPerscriptionId());
 		model.addAttribute("mpList", mpList);	
+		//显示已添加的检查项
+		List<CheckItem> ciList = checkItemService.getCheckItemByRegisterId(registerId);
+		model.addAttribute("ciList", ciList);
+		Iterator<CheckItem> it = ciList.iterator();
+		while (it.hasNext()) {
+			CheckItem cix = it.next();
+			System.out.println(cix.getCheckID());
+		}
+//		System.out.println("getCheckItemByRegisterId");
 		return "dt/patientPerscription";
 	}
 	

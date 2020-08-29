@@ -21,7 +21,6 @@ public class CheckItemServiceImpl implements CheckItemService {
 
     @Override
     public boolean insertCheckItem(CheckItem checkItem) {
-        checkItem.setCheckID(UUID.randomUUID().toString());
         checkItemDao.insertCheckItem(checkItem);
         return true;
     }
@@ -37,12 +36,17 @@ public class CheckItemServiceImpl implements CheckItemService {
     	if(flag==1)return true;
     	else return false;
     }
+
     public boolean addCheckItems(List<CheckItem> checkItems){
-    	
     	for(CheckItem c:checkItems){
-    		
     		 checkItemDao.insertCheckItem(c);
     	}
     	return true;
     }
+
+	public List<CheckItem> getCheckItemByRegisterId(String registerId) {
+		// TODO Auto-generated method stub
+//		return null;
+		return checkItemDao.getCheckItemByRegisterId(registerId);
+	}
 }

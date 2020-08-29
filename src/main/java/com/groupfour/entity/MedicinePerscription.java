@@ -2,7 +2,7 @@ package com.groupfour.entity;
 
 public class MedicinePerscription {
 	
-	private String perscriptionId;
+	private Integer perscriptionId;
 	private String registerId;
 	private String medicineId;
 	private String flag;
@@ -13,10 +13,10 @@ public class MedicinePerscription {
 	private String remark;
 	private MedicineInfo medicineInfo;
 	
-	public String getPerscriptionId() {
+	public Integer getPerscriptionId() {
 		return perscriptionId;
 	}
-	public void setPerscriptionId(String perscriptionId) {
+	public void setPerscriptionId(Integer perscriptionId) {
 		this.perscriptionId = perscriptionId;
 	}
 	public String getRegisterId() {

@@ -5,8 +5,8 @@
 
 
    <insert id="insertCheckItem" useGeneratedKeys="true" keyProperty="checkID" parameterType="com.groupfour.entity.CheckItem">
-       insert into check_item(check_id,register_id,item_id,amount,money,return_amount,return_money,flag,remark)
-       values(#{checkID},#{registerID},#{itemID},#{amount},#{money},#{returnAmount},#{returnMoney},#{flag},#{remark})
+       insert into check_item(register_id,item_id,amount,money,return_amount,return_money,flag,remark)
+       values(#{registerID},#{itemID},#{amount},#{money},#{returnAmount},#{returnMoney},#{flag},#{remark})
    </insert>
 
   <delete id="deleteById" >
@@ -16,5 +16,23 @@
   <update id="updateById" parameterType="com.groupfour.entity.CheckItem">
   	update check_item set amount=#{amount},remark=#{remark} where check_id=#{checkId}
   </update>
-
+	
+	<resultMap type="CheckItem" id="ciMap">
+		<id column="check_id" property="checkID" />
+		<result column="item_id" property="inspectionItem.itemId" />
+		<result column="item_name" property="inspectionItem.itemName" />
+		<result column="deptment" property="inspectionItem.deptment" />
+		<result column="price" property="inspectionItem.price" />
+		<result column="unit" property="inspectionItem.unit" />
+		<result column="amount" property="amount" />
+		<result column="money" property="money" />
+		<result column="remark" property="remark" />
+		<result column="return_amount" property="returnAmount" />
+		<result column="return_money" property="returnMoney" />
+	</resultMap>
+	
+	<select id="getCheckItemByRegisterId" resultMap="ciMap">
+		select * from check_item ci,inspection_item ii
+		where ci.item_id = ii.item_id and ci.flag = 0 and ci.register_id=#{registerId}
+	</select>
 </mapper>
