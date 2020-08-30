@@ -111,23 +111,14 @@ a:hover {
             $('#medicineSelect').window('close');
         }
 
-        <%-- //添加:registerId写死了:
-        function addMedic(medicineId, num) {
-
-            $.post("<%=path%>/dt/addMedic", { medicineId: medicineId, num: num }, function (data, textStatus) {
-                if (textStatus == "success") {
-                    $('#dg').datagrid('loadData', { total: 'data.length', rows: data });
-                    window.location.href = "<%=path%>/dt/optPatient";
-                }
-            }) --%>
-
       //添加：能动态获取registerId时用这个
       function addMedic(medicineId, num, price) {
     	  var money=num*price;
                     var registerId = $("#registerId").val();
                     $.post("<%=path%>/dt/addMedic", { registerId: registerId, medicineId: medicineId, num: num, money: money }, function (data, textStatus) {
                         if (textStatus == "success") {
-                            $('#dg').datagrid('loadData', { total: 'data.length', rows: data });
+                        	$("#medicSelect").window("close");
+                            //$('#dg').datagrid('loadData', { total: 'data.length', rows: data });
                             window.location.href = "<%=path%>/dt/patientPerscription?registerId=" + registerId;
                         }
                     })
@@ -148,6 +139,7 @@ a:hover {
          	 if(textStatus=="success"){
          		 //$('#dg').datagrid('loadData',{total:'data.length',rows:data});
          		$('#dg_list').datagrid('deleteRow', index);
+         		$('#dg').datagrid('deleteRow', index);
          		 <%-- window.location.href = "<%=path %>/dt/chufangList"; --%>
          	 }
        })
@@ -177,10 +169,9 @@ function addItem(itemId, money) {
 		{registerID: registerId, itemID: itemId, amount: 1,money: money, flag: 0}, 
 		function (data, textStatus) {
         if (textStatus == "success") {
-        	alert("addCheckItem--" + data);
-            //$('#dg').datagrid('loadData', { total: 'data.length', rows: data });
-            //$('#dg').datagrid('loadData',{total:'data.length',rows:data});
-            <%-- window.location.href = "<%=path%>/dt/patientPerscription?registerId=" + registerId; --%>
+        	$("#itemSelect").window("close");
+            //$('#dg_chk').datagrid('loadData', { total: 'data.length', rows: data });
+            window.location.href = "<%=path%>/dt/patientPerscription?registerId=" + registerId;
         }
     })
 }
@@ -272,37 +263,6 @@ function addItem(itemId, money) {
         }
 
 
-    <%-- <% --保存检查项目 --%>
- function updateCheckItem(){
-     var registerId=$("#registerId").val();
-     addFlag = 0;
-     endFlag = 0;
-     var rows = $('#dg_chk').datagrid('getRows');
-     for(var i=0; i<rows.length; i++){
-         var row = rows[i];
-         var money =row.price;
-         var itemId = row.itemId;
-         addFlag ++;
-         $.ajax({
-             url:"<%=path%>/dt/insertCheckItem",
-             data: {
-                 "registerID":registerId,
-                 "itemID":itemId,
-                 "amount":1,
-                 "money":money,
-                 "flag":0
-             },
-             type : 'post',
-             dataType: "json",
-             success:function(data,textStatus){
-                 fn_endFlag();
-             },
-             error:function(data,textStatus) {
-                 alert("error: "+textStatus)
-             }
-         })
-     }
- }
  function fn_endFlag(){
      endFlag ++ ;
      if(addFlag==endFlag){
@@ -328,8 +288,8 @@ function addItem(itemId, money) {
    				$.post("<%=path %>/dt/removeCheckFromRecipe?checkId=" + checkId,
    				 function(data,textStatus){
    			if(textStatus=="success"){
-		   				//$('#dg_chk').datagrid('deleteRow', index);
 		   				$('#dg_itemList').datagrid('deleteRow', index);
+		   				$('#dg_chk').datagrid('deleteRow', index);
 				//	} else {
 					//	alert("删除失败");
 					//}
